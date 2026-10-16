@@ -1,0 +1,130 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% block title %}О компании — Аптека «Здоровье+»{% endblock %}
+{% block content %}
+<h2>О компании</h2>
+<nav aria-label="Содержание страницы о компании">
+    <ul>
+        <li><a href="#about-info">Информация о компании</a></li>
+        <li><a href="#about-history">История по годам</a></li>
+        <li><a href="#about-requisites">Реквизиты</a></li>
+        <li><a href="#about-certificate">Сертификат</a></li>
+        <li><a href="#about-media">Видео и аудио</a></li>
+    </ul>
+</nav>
+
+{% if company %}
+    <section id="about-info">
+        <h3>{{ company.title }}</h3>
+        <div class="about-text">{{ company.about_text|linebreaks }}</div>
+        {% if company.logo %}
+            <p><img class="company-logo" src="{{ company.logo.url }}" alt="Логотип компании" width="200"></p>
+        {% else %}
+            <p><img class="company-logo" src="{% static 'pharmacy/img/logo.svg' %}" alt="Логотип компании «Здоровье+»" width="240" height="80"></p>
+        {% endif %}
+        <blockquote cite="https://www.who.int/ru">
+            <p>Здоровье — это состояние полного физического, душевного и социального благополучия, а не только отсутствие болезней и физических дефектов.</p>
+        </blockquote>
+        <p>Источник: <cite>Устав Всемирной организации здравоохранения</cite>.</p>
+        <p>Наши провизоры напоминают: <q cite="https://www.who.int/ru">правильно подобранный препарат экономит время и деньги</q>.</p>
+        <p>ВОЗ определяет здоровье так: <q lang="en">health is a state of complete physical, mental and social well-being</q>.</p>
+    </section>
+
+    <section id="about-history">
+        <h4>История по годам</h4>
+        <h5>Как развивалась сеть</h5>
+        {% if company.history %}
+            <div class="history about-text">{{ company.history|linebreaks }}</div>
+        {% else %}
+            <p>История компании пока не заполнена.</p>
+        {% endif %}
+    </section>
+
+    <section id="about-requisites">
+        <h4>Реквизиты</h4>
+        <h5>Официальные данные организации</h5>
+        {% if company.requisites %}
+            <div class="requisites">{{ company.requisites }}</div>
+        {% else %}
+            <p>Реквизиты пока не заполнены.</p>
+        {% endif %}
+    </section>
+
+    <section id="about-certificate">
+        <h4>Сертификат</h4>
+        <h5>Единый реестр аптечных организаций</h5>
+        <h6>Свидетельство о внесении сведений</h6>
+        <div class="certificate">
+            <div class="certificate__content">
+                <p class="certificate__org">Единый реестр аптечных организаций</p>
+                <h5 class="certificate__title">Свидетельство</h5>
+                <p class="certificate__subtitle">о внесении сведений в реестр</p>
+                <p class="certificate__company">ООО «Аптека Здоровье+»</p>
+                <dl class="certificate__data">
+                    <dt>УНП</dt>
+                    <dd>123456789</dd>
+                    <dt>Адрес</dt>
+                    <dd>г. Минск, пр-т Независимости, 1</dd>
+                    <dt>Реестровый номер</dt>
+                    <dd>8241</dd>
+                    <dt>Дата выдачи</dt>
+                    <dd>15 сентября 2026 г.</dd>
+                </dl>
+                <p class="certificate__sign">Директор ассоциации «Здоровье+» — Тарасевич А. П.</p>
+            </div>
+        </div>
+        <p><small>Рамка сертификата собрана из графического файла (border-image), фон — изображение и градиент, слои разведены по z-index. PDF-версия доступна для просмотра и скачивания.</small></p>
+        <figure>
+            <object data="{% static 'pharmacy/docs/certificate.pdf' %}" type="application/pdf" width="640" height="800">
+                <p>Не удалось отобразить сертификат. <a href="{% static 'pharmacy/docs/certificate.pdf' %}" download>Скачать сертификат (PDF)</a>.</p>
+            </object>
+            <figcaption>Сертификат члена ассоциации аптек «Здоровье+».</figcaption>
+        </figure>
+    </section>
+
+    <section id="about-media">
+        <h4>Видео и аудио</h4>
+        {% if company.video_url %}
+            <p>Официальный видеоролик: <a href="{{ company.video_url }}">{{ company.video_url }}</a></p>
+        {% endif %}
+        <figure>
+            <video controls muted loop width="640" poster="{% static 'pharmacy/img/news/pharmacy2.jpeg' %}">
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                <track kind="subtitles" src="{% static 'pharmacy/docs/subtitles.vtt' %}" srclang="ru" label="Русские субтитры" default>
+                Ваш браузер не поддерживает видео. <a href="https://www.w3schools.com/html/mov_bbb.mp4" download>Скачать ролик</a>.
+            </video>
+            <figcaption>Презентационный ролик аптеки «Здоровье+» с субтитрами.</figcaption>
+        </figure>
+        <p><b>Аудио:</b> <strong>звуковая заставка</strong> сети аптек.</p>
+        <audio controls>
+            <source src="{% static 'pharmacy/docs/tone.wav' %}" type="audio/wav">
+            Ваш браузер не поддерживает аудио. <a href="{% static 'pharmacy/docs/tone.wav' %}" download>Скачать аудиофайл</a>.
+        </audio>
+    </section>
+
+    <section>
+        <h3>Термины и факты</h3>
+        <p><dfn>Аптечная организация</dfn> — организация, осуществляющая <abbr title="фармацевтическую">фарм.</abbr> деятельность и розничную реализацию лекарственных средств.</p>
+        <p><b>Обратите внимание:</b> <strong>рецептурные препараты</strong> отпускаются <em>только</em> по назначению врача. Латинское название парацетамола — <i>Paracetamolum</i>.</p>
+        <p>Формула воды — H<sub>2</sub>O, углекислого газа — CO<sub>2</sub>; площадь склада — 1200 м<sup>2</sup>.</p>
+        <p><mark>Витамины со скидкой 15%</mark> — акция месяца. Старая цена: <s>18,70 BYN</s>, новая цена: <strong>15,90 BYN</strong>.</p>
+        <p><u>Внимание:</u> срок действия акции ограничен, уточняйте у провизора.</p>
+        <p><small>Информация размещена в справочных целях и не является медицинской консультацией.</small></p>
+    </section>
+
+    <section id="about-poem">
+        <h3>Четверостишие о здоровье</h3>
+        <p>
+            Здоровье береги смолоду,<br>
+            Водой и сном его храни,<br>
+            Приходи в «Здоровье+» за советом,<br>
+            И долгие годы живи!
+        </p>
+        <p><small>Фиксированные переносы строк заданы тегом <code>&lt;br&gt;</code>.</small></p>
+        <p>Потенциальный перенос (тег <code>&lt;wbr&gt;</code>):
+            <span>здоровье<wbr>сберегающий<wbr>режим<wbr>дня</span> — браузер перенесёт слово только при нехватке ширины.</p>
+    </section>
+{% else %}
+    <p>Информация о компании пока не добавлена.</p>
+{% endif %}
+{% endblock %}

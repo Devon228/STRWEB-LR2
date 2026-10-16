@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Демонстрация Asyncio — подгрузка текстур</title>
+    
+    <link rel="stylesheet" href="/static/pharmacy/css/style.css">
+</head>
+<body>
+    <h1>Демонстрация Задача В (Asyncio): Асинхронная подгрузка текстур с сервера во время игры</h1>
+
+    <p>Изолированная симуляция игрового движка: 15 текстур загружаются конкурентно через <code>asyncio.gather()</code>.</p>
+    <p>Переменная <var>delay</var> задаёт задержку загрузки каждой текстуры, а результат виден в логе ниже.</p>
+    <p>Для перезапуска нажмите <kbd>Ctrl</kbd> + <kbd>F5</kbd>. Результат: <samp>Успешно загружено: 15 текстур</samp>.</p>
+
+    <h2>Пример кода</h2>
+    <pre><code>async def load_texture(name, delay):
+    await asyncio.sleep(delay)
+    return name
+
+async def main():
+    textures = await asyncio.gather(load_texture("wall", 0.5))
+    print(textures)</code></pre>
+
+    <h2>Лог загрузки</h2>
+    <table border="1" cellpadding="4" cellspacing="0">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Текстура</th>
+                <th>Размер (МБ)</th>
+                <th>Задача asyncio</th>
+                <th>Старт</th>
+                <th>Окончание</th>
+                <th>Время (сек)</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr>
+                    <td>1</td>
+                    <td>skybox.hdr</td>
+                    <td>12,0</td>
+                    <td>texture-1</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:12</td>
+                    <td>1,442</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>2</td>
+                    <td>terrain_diffuse.png</td>
+                    <td>6,5</td>
+                    <td>texture-2</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,781</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>3</td>
+                    <td>terrain_normal.png</td>
+                    <td>4,8</td>
+                    <td>texture-3</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,577</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>4</td>
+                    <td>player_skin.tga</td>
+                    <td>2,1</td>
+                    <td>texture-4</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,253</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>5</td>
+                    <td>player_anim_atlas.png</td>
+                    <td>3,4</td>
+                    <td>texture-5</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,408</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>6</td>
+                    <td>weapon_diffuse.png</td>
+                    <td>1,8</td>
+                    <td>texture-6</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,216</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>7</td>
+                    <td>weapon_normal.png</td>
+                    <td>1,5</td>
+                    <td>texture-7</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,181</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>8</td>
+                    <td>muzzle_flash.png</td>
+                    <td>0,6</td>
+                    <td>texture-8</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>0,073</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>9</td>
+                    <td>ui_hud.png</td>
+                    <td>1,2</td>
+                    <td>texture-9</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,146</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>10</td>
+                    <td>particles_smoke.png</td>
+                    <td>2,0</td>
+                    <td>texture-10</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,241</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>11</td>
+                    <td>water_caustics.png</td>
+                    <td>3,1</td>
+                    <td>texture-11</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,373</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>12</td>
+                    <td>building_facade.jpg</td>
+                    <td>5,5</td>
+                    <td>texture-12</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,66</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>13</td>
+                    <td>tree_billboard.png</td>
+                    <td>1,9</td>
+                    <td>texture-13</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,228</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>14</td>
+                    <td>shadow_map_4k.raw</td>
+                    <td>8,0</td>
+                    <td>texture-14</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,961</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+                <tr>
+                    <td>15</td>
+                    <td>ambient_occlusion.png</td>
+                    <td>4,0</td>
+                    <td>texture-15</td>
+                    <td>02/10/2026 17:18:10</td>
+                    <td>02/10/2026 17:18:11</td>
+                    <td>0,482</td>
+                    <td>Успешно загружено</td>
+                </tr>
+            
+        </tbody>
+    </table>
+
+    <h2>Итоговая аналитика</h2>
+    <ul>
+        <li>Общее время асинхронной загрузки: <strong>1,443</strong> сек.</li>
+        <li>Время последовательной загрузки (сумма всех задержек): <strong>7,008</strong> сек.</li>
+        <li>Сэкономлено времени: <strong>5,565</strong> сек.</li>
+        <li>Эффективность: <strong>+79,4%</strong></li>
+    </ul>
+
+    <p>
+        <a href="/">На главную</a>
+    </p>
+</body>
+</html>

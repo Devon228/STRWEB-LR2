@@ -1,0 +1,71 @@
+{
+ "version": "26.10.2",
+ "messages": [
+  {
+   "type": "info",
+   "lastLine": 169,
+   "lastColumn": 46,
+   "firstColumn": 13,
+   "subType": "warning",
+   "message": "The “border” attribute on the “table” element is obsolete. Consider specifying “img { border: 0; }” in CSS instead.",
+   "extract": "          <table border=\"1\" cellpadding=\"4\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  },
+  {
+   "type": "info",
+   "lastLine": 169,
+   "lastColumn": 46,
+   "firstColumn": 13,
+   "subType": "warning",
+   "message": "The “cellpadding” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "          <table border=\"1\" cellpadding=\"4\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  },
+  {
+   "type": "info",
+   "lastLine": 231,
+   "lastColumn": 38,
+   "firstColumn": 5,
+   "subType": "warning",
+   "message": "The “border” attribute on the “table” element is obsolete. Consider specifying “img { border: 0; }” in CSS instead.",
+   "extract": "</h3>\n    <table border=\"1\" cellpadding=\"4\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  },
+  {
+   "type": "info",
+   "lastLine": 231,
+   "lastColumn": 38,
+   "firstColumn": 5,
+   "subType": "warning",
+   "message": "The “cellpadding” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "</h3>\n    <table border=\"1\" cellpadding=\"4\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  },
+  {
+   "type": "info",
+   "lastLine": 402,
+   "lastColumn": 38,
+   "firstColumn": 5,
+   "subType": "warning",
+   "message": "The “border” attribute on the “table” element is obsolete. Consider specifying “img { border: 0; }” in CSS instead.",
+   "extract": "</h3>\n    <table border=\"1\" cellpadding=\"4\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  },
+  {
+   "type": "info",
+   "lastLine": 402,
+   "lastColumn": 38,
+   "firstColumn": 5,
+   "subType": "warning",
+   "message": "The “cellpadding” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "</h3>\n    <table border=\"1\" cellpadding=\"4\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  }
+ ]
+}

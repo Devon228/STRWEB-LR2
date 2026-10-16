@@ -1,0 +1,44 @@
+=== ЗАГРУЖЕННЫЕ СТРАНИЦЫ ===
+  /                                  200
+  /about/                            200
+  /news/                             200
+  /news/36/                          200
+  /glossary/                         200
+  /contacts/                         200
+  /privacy/                          200
+  /vacancies/                        200
+  /categories/                       200
+  /medications/                      200
+  /promos/                           200
+  /services/                         200
+  /reviews/                          200
+  /concurrency-demo/                 200
+  /cart/                             200
+  /payment/                          200
+  /register/                         200
+  /login/                            200
+  /medications/MED-001/              200
+  /purchases/                        200
+  /pickup/                           200
+  /owner/                            200
+  /analytics/                        200
+  /employee/sales/                   200
+  /employee/suppliers/               403
+  /employee/purchases/               200
+  /medications/MED-001/edit/         200
+  /medications/MED-001/delete/       200
+
+=== ИНВАРИАНТЫ ===
+contacts <img>: 12 (в тестовой БД ожидается 10)
+news <img> >= 1: True
+home TIME_ZONE in HTML: True
+home user_now literal absent: True
+home <img>: True
+concurrency Asyncio: True
+legacy template on privacy: True
+
+=== ПРОБЛЕМЫ ===
+нет
+
+=== ОТСУТСТВУЮЩИЕ ТЕГИ (0 из 97) ===
+все 97 тегов присутствуют

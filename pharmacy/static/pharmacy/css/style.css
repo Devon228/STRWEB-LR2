@@ -1,0 +1,2422 @@
+/* ==========================================================================
+   Аптека «Здоровье+» — единый файл стилей (ЛР2, CSS)
+   --------------------------------------------------------------------------
+   Один stylesheet на весь сайт, без разбиения по страницам.
+   Никакого JS для оформления: прелоадер, сцена и эффекты — только CSS.
+   Структура файла:
+     1.  Переменные и базовые стили
+     2.  Задний фон сайта
+     3.  Подключённые шрифты и типографика
+     4.  Селекторы (элементов, атрибутов, классов, комбинации)
+     5.  Псевдоклассы
+     6.  Псевдоэлементы
+     7.  Ссылки, курсоры, доступность
+     8.  Шапка и фиксированная навигация (sticky)
+     9.  Каркас страницы: Flexbox (aside + main)
+     10. Подвал
+     11. Главная: Grid-каталог, круглые партнёры, позиционирование статьи
+     12. Главная: CSS-анимация «Аптека» (3D)
+     13. Прелоадер: вращающаяся пилюля
+     14. О компании: логотип, сертификат (border-image, z-index), история
+     15. Новости: карточки, overflow + многоточие, многоколоночный макет
+     16. Словарь: оформление details/summary
+     17. Контакты: Flexbox
+     18. Вакансии: float и clear
+     19. Отзывы и формы: шрифты-ключевые слова, состояния полей
+     20. Промокоды: списки и юникод-маркеры
+     21. Таблицы: border-collapse, пустые ячейки, выравнивание
+     22. Политика конфиденциальности
+     23. Медиа-запросы (ширина, высота, ориентация)
+     24. Вендорные префиксы
+     25. Анимации (keyframes)
+   ========================================================================== */
+
+/* ===== 1. Переменные и базовые стили ===================================== */
+:root {
+    --brand: #1d4ed8;
+    --brand-dark: #1e3a8a;
+    --brand-light: #dbe6ff;
+    --accent: #b91c1c;
+    --gold: #d4af37;
+    --ink: #212529;
+    --muted: #5a6069;
+    --card: #ffffff;
+    --bg: #eef3ff;
+    --radius: 14px;
+    --shadow: 0 10px 24px rgba(30, 58, 138, 0.12);
+    --shadow-lg: 0 18px 40px rgba(30, 58, 138, 0.22);
+    --font-main: "Montserrat", "Roboto", "Segoe UI", Arial, sans-serif;
+    --font-alt: "Roboto", "Segoe UI", Arial, sans-serif;
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-mono: "Courier New", "DejaVu Sans Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding-bottom: 64px;
+    font-family: var(--font-main);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background-color: var(--bg);
+}
+
+/* ===== 2. Задний фон сайта =============================================== */
+/* Фоновое изображение + градиент, зафиксировано при прокрутке. */
+body {
+    background-image:
+        url("../img/paper.png"),
+        radial-gradient(circle at 12% 8%, rgba(29, 78, 216, 0.16), transparent 45%),
+        linear-gradient(160deg, #f7faff 0%, #e8efff 55%, #dde8fb 100%);
+    background-repeat: repeat, no-repeat, no-repeat;
+    background-size: 180px 180px, cover, cover;
+    background-attachment: fixed, fixed, fixed;
+}
+
+/* ===== 3. Шрифты и типографика =========================================== */
+/* Основной шрифт подключён из службы Google Fonts в base.html:
+   Montserrat (основной), Roboto (альтернативный) + семейство sans-serif. */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 0.6em;
+    font-family: var(--font-main);
+    line-height: 1.2;
+    color: var(--brand-dark);
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+h2 {
+    position: relative;
+    margin-top: 0.4em;
+    padding-bottom: 0.35em;
+    font-size: 1.5rem;
+    text-transform: capitalize;
+}
+
+/* Декоративная линия под заголовками второго уровня (псевдоэлемент). */
+h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 72px;
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--brand), var(--gold));
+}
+
+h3 {
+    font-size: 1.22rem;
+}
+
+h4 {
+    font-size: 1.1rem;
+    text-transform: capitalize;
+}
+
+h5 {
+    font-size: 1rem;
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+}
+
+h6 {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+p {
+    margin: 0 0 1em;
+    /* Соседние абзацы: вертикальные margin схлопываются до одного 1em. */
+}
+
+/* Красная строка (text-indent) для текстовых фрагментов статей. */
+.article-content p,
+.about-text p,
+.policy p {
+    text-indent: 1.8em;
+}
+
+/* Первая буква абзаца статьи — красная буквица (::first-letter). */
+.article-content p:first-of-type {
+    text-indent: 0;
+}
+
+.article-content p:first-of-type::first-letter {
+    float: left;
+    margin: 0.05em 0.12em 0 0;
+    font-family: var(--font-serif);
+    font-size: 3.4em;
+    font-weight: 700;
+    line-height: 0.78;
+    color: var(--accent);
+}
+
+/* Первая строка абзаца о компании — капитель и разрядка (::first-line). */
+.about-text > p:first-of-type::first-line {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+}
+
+/* Капитель и интервалы между словами/буквами. */
+.partner__name {
+    font-variant: small-caps;
+    letter-spacing: 0.12em;
+    text-transform: capitalize;
+}
+
+.certificate__title {
+    word-spacing: 0.4em;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+/* Перенос и разрыв слов. */
+.article-content p,
+.news-summary {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.article-content {
+    text-align: justify;
+}
+
+blockquote {
+    margin: 1.5em 0;
+    padding: 1em 1.4em;
+    border-left: 6px solid var(--brand);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: linear-gradient(90deg, var(--brand-light), #ffffff);
+    font-style: italic;
+}
+
+blockquote::before {
+    content: "«";
+    font-family: var(--font-serif);
+    font-size: 2.4em;
+    line-height: 0;
+    vertical-align: -0.4em;
+    color: var(--brand);
+}
+
+blockquote::after {
+    content: "»";
+    font-family: var(--font-serif);
+    font-size: 2.4em;
+    line-height: 0;
+    vertical-align: -0.4em;
+    color: var(--brand);
+}
+
+/* Кавычки зависят от языка цитаты (псевдокласс :lang). */
+q {
+    quotes: "«" "»" "„" "“";
+    font-style: italic;
+    color: var(--brand-dark);
+}
+
+q:lang(ru) {
+    quotes: "«" "»" "„" "“";
+}
+
+q:lang(en) {
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+q::before {
+    content: open-quote;
+    color: var(--accent);
+}
+
+q::after {
+    content: close-quote;
+    color: var(--accent);
+}
+
+cite {
+    font-style: normal;
+    font-weight: 600;
+}
+
+mark {
+    padding: 0.05em 0.35em;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #fef3c7, #fde68a);
+    color: var(--ink);
+}
+
+s {
+    color: var(--muted);
+}
+
+small {
+    font-size: 0.82em;
+    color: var(--muted);
+}
+
+abbr[title] {
+    cursor: help;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+}
+
+dfn {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--brand);
+}
+
+code,
+kbd,
+samp,
+var {
+    padding: 0.1em 0.35em;
+    border-radius: 6px;
+    background: #eef2ff;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--brand-dark);
+}
+
+pre {
+    overflow-x: auto;
+    padding: 1em 1.2em;
+    border-left: 5px solid var(--gold);
+    border-radius: var(--radius);
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+pre code {
+    padding: 0;
+    background: transparent;
+    color: inherit;
+}
+
+hr {
+    height: 3px;
+    border: 0;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--brand), var(--gold), transparent);
+}
+
+/* ===== 4. Селекторы ====================================================== */
+/* Комбинация «класс + атрибут» (AND) */
+a.read-more[href] {
+    display: inline-block;
+}
+
+/* Потомок: ссылки внутри навигации */
+.site-nav a {
+    position: relative;
+}
+
+/* Дочерний: прямые потомки списка партнёров */
+.partners > li {
+    flex: 0 0 auto;
+}
+
+/* Дочерний: заголовки, лежащие непосредственно в статье, получают стрелку */
+article > h3::before,
+.news-card__title::before {
+    content: "\27A4  ";
+    color: var(--accent);
+}
+
+/* Смежные селекторы: подпись сразу после поля ввода */
+label + input,
+label + select,
+label + textarea {
+    margin-top: 0.25rem;
+}
+
+h2 + p {
+    margin-top: 0.2em;
+}
+
+dt + dd {
+    margin-top: 0;
+}
+
+.news-card + .news-card {
+    margin-top: 1.25rem;
+}
+
+/* Атрибутные селекторы: точное значение, начало, конец, вхождение */
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="month"],
+input[type="password"],
+input[type="text"] {
+    width: min(100%, 26rem);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--brand);
+}
+
+input[type="file"] {
+    width: auto;
+    padding: 0.4rem;
+    border: 1px dashed var(--brand);
+}
+
+a[target="_blank"] {
+    font-weight: 600;
+}
+
+a[href^="https://"]::after {
+    content: " \2197";
+    font-size: 0.85em;
+    color: var(--accent);
+}
+
+a[href^="tel:"]::before {
+    content: "\260E  ";
+}
+
+a[href^="mailto:"]::before {
+    content: "\2709  ";
+}
+
+a[href^="#"] {
+    text-decoration-style: dotted;
+}
+
+a[href$=".pdf"]::after {
+    content: " (PDF)";
+    font-size: 0.8em;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+a[href$=".mp4"]::after {
+    content: " (MP4)";
+    font-size: 0.8em;
+}
+
+a[href$=".wav"]::after {
+    content: " (WAV)";
+    font-size: 0.8em;
+}
+
+a[href$=".vtt"]::after {
+    content: " (VTT)";
+    font-size: 0.8em;
+}
+
+a[href*="who.int"] {
+    font-weight: 600;
+}
+
+[form="payment-form"] {
+    border: 2px solid var(--gold);
+}
+
+img[loading="lazy"] {
+    background: var(--brand-light);
+}
+
+[lang="en"] {
+    font-style: italic;
+}
+
+/* ===== 5. Псевдоклассы =================================================== */
+/* Ссылки: непосещённые, посещённые, наведение, нажатие, фокус. */
+a:link {
+    color: var(--brand);
+}
+
+a:visited {
+    color: #7c3aed;
+}
+
+a:hover {
+    color: var(--accent);
+    text-decoration-thickness: 2px;
+}
+
+a:active {
+    color: var(--gold);
+}
+
+a:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Списки: первый, последний, чётные/нечётные, n-й элемент. */
+.catalog-grid li:first-child {
+    border-color: var(--gold);
+}
+
+.catalog-grid li:last-child {
+    border-color: var(--brand);
+}
+
+.site-nav a:nth-child(3n) {
+    font-weight: 700;
+}
+
+.footer-links li:nth-child(even) {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.contact-card:first-of-type {
+    border-top: 4px solid var(--gold);
+}
+
+/* Таблицы: строки и ячейки по положению. */
+table tr:first-child th {
+    border-top: 0;
+}
+
+table tr:last-child td {
+    border-bottom: 0;
+}
+
+table td:first-child {
+    font-weight: 600;
+}
+
+table td:last-child {
+    border-right: 0;
+}
+
+/* Пустые ячейки — фон-штриховка. */
+td:empty {
+    background: repeating-linear-gradient(
+        45deg,
+        #f1f5f9,
+        #f1f5f9 6px,
+        #e2e8f0 6px,
+        #e2e8f0 12px
+    );
+}
+
+/* Формы: доступные, обязательные, заблокированные, включённые. */
+input:enabled,
+select:enabled,
+textarea:enabled {
+    background-color: #ffffff;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled,
+button:disabled {
+    border-color: #cbd5e1;
+    background: repeating-linear-gradient(45deg, #f8fafc, #f8fafc 5px, #eef2f7 5px, #eef2f7 10px);
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+input:required:not([type="radio"]):not([type="checkbox"]),
+select:required,
+textarea:required {
+    border-left: 5px solid var(--accent);
+}
+
+input:optional:not([type="radio"]):not([type="checkbox"]),
+select:optional,
+textarea:optional {
+    border-left: 5px solid var(--brand);
+}
+
+input:checked + label {
+    color: var(--brand);
+    font-weight: 700;
+}
+
+input:out-of-range {
+    border-color: var(--accent);
+    background-color: #fee2e2;
+}
+
+input:in-range {
+    border-color: #16a34a;
+}
+
+input:valid:not(:placeholder-shown) {
+    border-right: 5px solid #16a34a;
+}
+
+input:invalid:not(:placeholder-shown) {
+    border-right: 5px solid var(--accent);
+}
+
+input:placeholder-shown {
+    font-style: italic;
+}
+
+input:read-only {
+    background: #f1f5f9;
+}
+
+/* ===== 6. Псевдоэлементы ================================================= */
+::selection {
+    background: var(--gold);
+    color: #1f2937;
+}
+
+input::placeholder {
+    color: #94a3b8;
+}
+
+summary::marker {
+    content: "";
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Юникод-маркеры списка каталога и архива промокодов. */
+.catalog-grid li {
+    list-style: none;
+}
+
+.catalog-grid li::before {
+    content: "\1F48A  ";
+    margin-right: 0.25rem;
+}
+
+.promo-archive li::marker {
+    content: "\2716  ";
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.promo-archive li:nth-child(odd)::marker {
+    content: "\2714  ";
+    color: #16a34a;
+}
+
+/* Контекст в начале/конце фрагмента текста (::before/::after). */
+.latest-article__badge::before {
+    content: "\2605  ";
+}
+
+.read-more::after {
+    content: " \2192";
+    transition: margin-left 0.3s ease;
+}
+
+.read-more:hover::after {
+    margin-left: 0.35rem;
+}
+
+.certificate__company::before,
+.certificate__company::after {
+    content: "\2726";
+    margin: 0 0.6em;
+    color: var(--gold);
+}
+
+/* ===== 7. Ссылки, курсоры, доступность =================================== */
+a,
+button,
+summary,
+input[type="submit"],
+input[type="button"],
+input[type="checkbox"],
+input[type="radio"],
+label[for],
+select {
+    cursor: pointer;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* ===== 8. Шапка и фиксированная навигация ================================ */
+header {
+    padding: 1rem clamp(0.8rem, 3vw, 2.5rem) 0;
+    background: linear-gradient(135deg, #ffffff 0%, #eaf0ff 100%);
+    border-bottom: 1px solid #d7e0f5;
+}
+
+header > div {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+header > div svg {
+    flex: 0 0 auto;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+header > div svg:hover {
+    transform: rotate(-8deg) scale(1.08);
+    box-shadow: var(--shadow-lg);
+}
+
+header > p {
+    margin: 0.5rem 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* Область навигации фиксируется при прокрутке страницы. */
+.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 0 calc(-1 * clamp(0.8rem, 3vw, 2.5rem));
+    padding: 0.55rem clamp(0.8rem, 3vw, 2.5rem);
+    background: linear-gradient(90deg, var(--brand-dark), var(--brand) 55%, #2563eb);
+    box-shadow: 0 6px 18px rgba(30, 58, 138, 0.28);
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.site-nav a {
+    padding: 0.35rem 0.6rem;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.site-nav a:link,
+.site-nav a:visited {
+    color: #ffffff;
+}
+
+.site-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fde68a;
+    transform: translateY(-2px);
+}
+
+.site-nav a:active {
+    transform: translateY(1px);
+}
+
+.site-nav form {
+    display: inline;
+    margin: 0;
+}
+
+.site-nav button {
+    padding: 0.35rem 0.7rem;
+    border: 0;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #ffffff;
+    font: button;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.site-nav button:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+header hr {
+    display: none;
+}
+
+/* ===== 9. Каркас страницы: Flexbox ======================================= */
+.layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 1.5rem auto;
+    padding: 0 clamp(0.8rem, 3vw, 2.5rem);
+}
+
+aside {
+    position: sticky;
+    top: 86px;
+    z-index: 10;
+    flex: 0 0 250px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding: 1rem 1.1rem;
+    border: 1px solid #dbe4f7;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, #ffffff, #f3f7ff);
+    box-shadow: var(--shadow);
+}
+
+aside h2 {
+    font-size: 1.1rem;
+}
+
+aside h3 {
+    margin-top: 1.2em;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+aside ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+aside li + li {
+    border-top: 1px dashed #d7e0f5;
+}
+
+aside a {
+    display: block;
+    padding: 0.45rem 0.35rem;
+    color: var(--ink);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+}
+
+aside a:hover {
+    transform: translateX(6px);
+    color: var(--brand);
+    background: var(--brand-light);
+    border-radius: 8px;
+}
+
+main {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 1.5rem clamp(1rem, 2.5vw, 2rem);
+    border: 1px solid #e2e8f7;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow);
+}
+
+main > section {
+    margin-bottom: 2.2rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px dashed #dbe4f7;
+}
+
+main > section:last-of-type {
+    border-bottom: 0;
+}
+
+main > nav[aria-label] {
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius);
+    background: var(--brand-light);
+}
+
+main > nav[aria-label] ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ===== 10. Подвал ======================================================== */
+footer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem clamp(0.8rem, 3vw, 2.5rem);
+    background: linear-gradient(135deg, #0f172a, var(--brand-dark));
+    color: #dbeafe;
+}
+
+footer h2 {
+    font-variant: small-caps;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+}
+
+footer h2::after {
+    background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+footer h3 {
+    color: #bfdbfe;
+}
+
+footer address {
+    font-style: normal;
+    line-height: 1.9;
+}
+
+footer a {
+    color: #ffffff;
+}
+
+footer a:visited {
+    color: #c7d2fe;
+}
+
+footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer-links li {
+    padding: 0.3rem 0.4rem;
+    border-radius: 6px;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* ===== 11. Главная: Grid, партнёры, позиционирование ===================== */
+/* Каталог товаров/услуг — CSS Grid Layout. */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.catalog-grid li {
+    padding: 1rem 1.1rem;
+    border: 2px solid #dbe4f7;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, #ffffff, #f6f9ff);
+    box-shadow: 0 6px 14px rgba(30, 58, 138, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.catalog-grid li:hover {
+    transform: translateY(-6px);
+    border-color: var(--brand);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Список компаний-партнёров — круглые блоки. */
+.partners {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 1rem 0;
+    list-style: none;
+}
+
+.partners .partner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 220px;
+    height: 220px;
+    padding: 1.2rem;
+    overflow: hidden;
+    border: 4px double var(--brand);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 25%, #ffffff, #e8efff 70%, #dbe6ff);
+    box-shadow: 0 12px 26px rgba(30, 58, 138, 0.18);
+    text-align: center;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.partners .partner:hover {
+    transform: perspective(600px) rotateY(8deg) scale(1.05);
+    border-color: var(--gold);
+    box-shadow: var(--shadow-lg);
+}
+
+.partner__logo {
+    width: 96px;
+    height: 64px;
+    margin-bottom: 0.5rem;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.partner__name,
+.partner__name:link,
+.partner__name:visited {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--brand-dark);
+    text-decoration: none;
+}
+
+.partner__name:hover {
+    color: var(--accent);
+}
+
+.partner__desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.74rem;
+    line-height: 1.4;
+    color: var(--muted);
+}
+
+/* Ссылка «сайт» появляется при наведении: visibility + opacity. */
+.partner__site {
+    margin-top: 0.35rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: var(--brand);
+    color: #ffffff;
+    font-size: 0.7rem;
+    text-decoration: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.partners .partner:hover .partner__site,
+.partners .partner:focus-within .partner__site {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Последняя статья: позиционирование относительно и абсолютно. */
+.latest-article {
+    position: relative;
+    z-index: 1;
+    margin-top: 1.5rem;
+    padding: 1.4rem;
+    border: 1px solid #dbe4f7;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, #ffffff, #f7faff);
+    box-shadow: var(--shadow);
+}
+
+.latest-article__badge {
+    position: absolute;
+    top: -0.9rem;
+    right: 1.2rem;
+    z-index: 5;
+    padding: 0.25rem 0.8rem;
+    border-radius: 999px;
+    background: conic-gradient(from 210deg, var(--brand), var(--gold), var(--accent), var(--brand));
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: var(--shadow);
+}
+
+.latest-article__hint {
+    position: absolute;
+    right: 1.2rem;
+    bottom: 1rem;
+    z-index: 2;
+    font-size: 0.75rem;
+    color: var(--muted);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.latest-article:hover .latest-article__hint {
+    visibility: visible;
+    opacity: 1;
+}
+
+.latest-article img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* ===== 12. Главная: CSS-анимация «Аптека» (3D) =========================== */
+.scene__stage {
+    position: relative;
+    height: 360px;
+    overflow: hidden;
+    border: 2px solid #cddaf3;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 55%, #d9e4f5 56%, #cbd8ef 100%);
+    box-shadow: inset 0 -12px 24px rgba(30, 58, 138, 0.12), var(--shadow);
+    perspective: 1000px;
+}
+
+.scene__stage::after {
+    content: "";
+    position: absolute;
+    right: 4%;
+    bottom: 4%;
+    width: 90px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(30, 58, 138, 0.18);
+    filter: blur(4px);
+}
+
+/* Аптекарь за прилавком. */
+.scene__counter {
+    position: absolute;
+    right: 6%;
+    bottom: 0;
+    z-index: 3;
+    width: 34%;
+    height: 55%;
+    border-radius: 14px 14px 0 0;
+    background: linear-gradient(180deg, #3b66d6, var(--brand) 40%, #173ea8);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.35);
+    transform: rotateY(-5deg);
+    transform-origin: right center;
+}
+
+.scene__counter::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 12px;
+    border-radius: 14px 14px 0 0;
+    background: #93c5fd;
+}
+
+.scene__pharmacist {
+    position: absolute;
+    left: 14%;
+    bottom: 88%;
+    z-index: 2;
+    width: 74px;
+}
+
+.scene__pharmacist-body {
+    height: 64px;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(180deg, #ffffff, #dbeafe);
+    border: 2px solid #93c5fd;
+}
+
+.scene__pharmacist-head {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto -6px;
+    border-radius: 50%;
+    background: #fcd9b8;
+    border: 2px solid #e0a97c;
+}
+
+.scene__eye {
+    position: absolute;
+    top: 22px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1f2937;
+    animation: blink 4s ease-in-out infinite;
+}
+
+.scene__eye--left {
+    left: 13px;
+}
+
+.scene__eye--right {
+    right: 13px;
+}
+
+.scene__mouth {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    width: 16px;
+    height: 7px;
+    margin-left: -8px;
+    border-radius: 0 0 10px 10px;
+    background: #b45309;
+}
+
+/* Покупатель: приходит сгорбленным, выпрямляется и уходит. */
+.scene__customer {
+    position: absolute;
+    bottom: 0;
+    left: -18%;
+    z-index: 4;
+    width: 84px;
+    animation: customer-walk 12s ease-in-out infinite;
+}
+
+.scene__customer-inner {
+    transform-origin: bottom center;
+    transform-style: preserve-3d;
+    animation: customer-straighten 12s ease-in-out infinite;
+}
+
+.scene__customer-head {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto -4px;
+    border-radius: 50%;
+    background: #fcd9b8;
+    border: 2px solid #e0a97c;
+}
+
+.scene__customer-eye {
+    position: absolute;
+    top: 20px;
+    left: 12px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #1f2937;
+}
+
+.scene__customer-smile {
+    position: absolute;
+    left: 50%;
+    bottom: 9px;
+    width: 14px;
+    height: 6px;
+    margin-left: -7px;
+    border-radius: 0 0 9px 9px;
+    background: #b45309;
+    opacity: 0;
+    animation: smile-show 12s ease-in-out infinite;
+}
+
+.scene__scarf {
+    position: relative;
+    z-index: 2;
+    width: 70px;
+    height: 16px;
+    margin: -2px auto -6px;
+    border-radius: 8px;
+    background: repeating-linear-gradient(90deg, var(--accent), var(--accent) 8px, #f97316 8px, #f97316 16px);
+    box-shadow: 0 2px 5px rgba(15, 23, 42, 0.25);
+    animation: scarf-fade 12s ease-in-out infinite;
+}
+
+.scene__customer-body {
+    width: 62px;
+    height: 78px;
+    margin: 0 auto;
+    border-radius: 20px 20px 8px 8px;
+    background: linear-gradient(180deg, #64748b, #475569);
+    border: 2px solid #334155;
+}
+
+.scene__customer-leg {
+    position: absolute;
+    bottom: -18px;
+    width: 12px;
+    height: 20px;
+    border-radius: 6px;
+    background: #334155;
+}
+
+.scene__customer-leg--left {
+    left: 20px;
+}
+
+.scene__customer-leg--right {
+    right: 20px;
+}
+
+/* Лекарство подлетает от аптекаря к покупателю. */
+.scene__medicine {
+    position: absolute;
+    top: 42%;
+    left: 66%;
+    z-index: 6;
+    width: 30px;
+    height: 14px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent) 0 50%, #ffffff 50% 100%);
+    border: 2px solid #7f1d1d;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
+    opacity: 0;
+    animation: medicine-fly 12s ease-in-out infinite;
+}
+
+/* Название компании появляется в конце и остаётся на экране. */
+.scene__name {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    z-index: 7;
+    margin: 0;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-dark);
+    text-shadow: 0 4px 0 #ffffff, 0 8px 18px rgba(30, 58, 138, 0.35);
+    opacity: 0;
+    animation: name-appear 12s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.scene__caption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+/* ===== 13. Прелоадер: вращающаяся пилюля ================================= */
+.preloader {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 0.45rem 1rem;
+    background: rgba(15, 23, 42, 0.9);
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 -6px 18px rgba(15, 23, 42, 0.35);
+}
+
+.pill {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 22px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ffffff 0 50%, var(--accent) 50% 100%);
+    box-shadow: 0 0 0 2px var(--gold), 0 4px 10px rgba(0, 0, 0, 0.4);
+    animation: pill-spin 1.6s linear infinite;
+}
+
+.pill::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 12px;
+    margin: -6px 0 0 -2px;
+    border-radius: 2px;
+    background: rgba(15, 23, 42, 0.55);
+}
+
+/* ===== 14. О компании ==================================================== */
+.company-logo {
+    display: inline-block;
+    padding: 0.4rem;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: var(--shadow);
+    transform-origin: center;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.company-logo:hover {
+    transform: perspective(700px) rotateY(18deg) rotate(-3deg) scale(1.12);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Сертификат: рамка из изображения, фон, градиент, слои и z-index. */
+.certificate {
+    position: relative;
+    z-index: 0;
+    margin: 1.5rem auto;
+    padding: 2.4rem 2.2rem;
+    border: 26px solid transparent;
+    border-image: url("../img/cert-border.png") 44 round;
+    background-image:
+        url("../img/paper.png"),
+        linear-gradient(135deg, #fffdf5 0%, #f4f7ff 55%, #eaf0ff 100%);
+    background-size: 180px 180px, cover;
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font-serif);
+    text-align: center;
+    color: #1f2937;
+}
+
+/* Слой 1: водяной знак-печать в центре. */
+.certificate::before {
+    content: "\2695";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%) rotate(-18deg);
+    font-size: 14rem;
+    line-height: 1;
+    color: rgba(29, 78, 216, 0.08);
+    pointer-events: none;
+}
+
+/* Слой 2: глянцевый градиент поверх фона, но под текстом. */
+.certificate::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 45%);
+    pointer-events: none;
+}
+
+.certificate__content {
+    position: relative;
+    z-index: 3;
+}
+
+.certificate__org {
+    margin: 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.certificate__title {
+    margin: 0.3em 0 0;
+    font-size: 2rem;
+    color: var(--accent);
+}
+
+.certificate__subtitle {
+    margin: 0 0 1em;
+    font-style: italic;
+    color: var(--muted);
+}
+
+.certificate__company {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brand-dark);
+}
+
+.certificate__data {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1.2rem;
+    max-width: 34rem;
+    margin: 1.2rem auto;
+    text-align: left;
+}
+
+.certificate__data dt {
+    font-weight: 700;
+    color: var(--brand);
+}
+
+.certificate__data dd {
+    margin: 0;
+}
+
+.certificate__sign {
+    margin-top: 1.5em;
+    padding-top: 0.8em;
+    border-top: 1px solid var(--gold);
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+/* История по годам: оформлена списком с CSS-счётчиком. */
+.history {
+    counter-reset: year;
+    margin: 1rem 0;
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius);
+    background: linear-gradient(90deg, var(--brand-light), transparent);
+}
+
+.history p {
+    position: relative;
+    margin: 0 0 0.6em;
+    padding-left: 3.2rem;
+    text-indent: 0;
+    counter-increment: year;
+}
+
+.history p::before {
+    content: counter(year, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    display: inline-block;
+    width: 2.4rem;
+    text-align: center;
+    border-radius: 999px;
+    background: var(--brand);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.history p::after {
+    content: "";
+    position: absolute;
+    left: 1.05rem;
+    top: 1.6em;
+    bottom: -0.7em;
+    width: 3px;
+    background: #c7d2fe;
+}
+
+.history p:last-child::after {
+    display: none;
+}
+
+/* Реквизиты выделены моноширинным шрифтом. */
+.requisites {
+    padding: 1rem 1.2rem;
+    border-left: 6px solid var(--gold);
+    border-radius: var(--radius);
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    white-space: pre-wrap;
+}
+
+/* Видео и аудио. */
+video {
+    display: block;
+    width: min(100%, 640px);
+    height: auto;
+    border: 3px solid var(--brand);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    background: #0f172a;
+}
+
+audio {
+    width: min(100%, 480px);
+    margin-top: 0.6rem;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    accent-color: var(--brand);
+}
+
+object,
+embed {
+    max-width: 100%;
+    border: 2px solid var(--brand-light);
+    border-radius: var(--radius);
+    background: #ffffff;
+}
+
+figure {
+    margin: 1.2rem 0;
+}
+
+figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--muted);
+}
+
+/* ===== 15. Новости ======================================================= */
+.news-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1.2rem;
+    border: 1px solid #dbe4f7;
+    border-radius: var(--radius);
+    background: #ffffff;
+    box-shadow: 0 6px 16px rgba(30, 58, 138, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.news-card__media {
+    flex: 0 0 220px;
+    margin: 0;
+}
+
+.news-card__media p {
+    margin: 0;
+}
+
+.news-card__media img {
+    width: 100%;
+    height: 140px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.news-card__body {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+/* Заголовок — одна строка с многоточием. */
+.news-card__title {
+    overflow: hidden;
+    margin-bottom: 0.4em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Краткое содержание — многоточие, когда текст не помещается. */
+.news-summary {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 4.8em;
+    margin-bottom: 0.6em;
+    color: #374151;
+}
+
+.news-card__meta {
+    margin-bottom: 0.6em;
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
+.read-more {
+    display: inline-block;
+    padding: 0.45rem 1.1rem;
+    border: 2px solid var(--brand);
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--brand), #2563eb);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.read-more:link,
+.read-more:visited {
+    color: #ffffff;
+}
+
+.read-more:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow);
+    color: #ffffff;
+}
+
+/* Полный текст статьи — многоколоночный макет («как газета»). */
+.article-content {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    -webkit-column-gap: 2.4rem;
+    -moz-column-gap: 2.4rem;
+    column-gap: 2.4rem;
+    -webkit-column-rule: 2px dotted #c7d2fe;
+    -moz-column-rule: 2px dotted #c7d2fe;
+    column-rule: 2px dotted #c7d2fe;
+}
+
+.article-content p {
+    margin-bottom: 0.9em;
+}
+
+/* ===== 16. Словарь: details/summary ====================================== */
+.faq {
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border: 1px solid #dbe4f7;
+    border-radius: var(--radius);
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.07);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.faq:hover {
+    border-color: var(--brand);
+    box-shadow: var(--shadow);
+}
+
+.faq summary {
+    position: relative;
+    padding: 0.9rem 3rem 0.9rem 1.2rem;
+    font-weight: 600;
+    color: var(--brand-dark);
+    list-style: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.faq summary::before {
+    content: "\2795";
+    position: absolute;
+    right: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.faq[open] summary {
+    background: linear-gradient(90deg, var(--brand-light), #ffffff);
+    color: var(--brand);
+}
+
+.faq[open] summary::before {
+    content: "\2796";
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.faq summary:hover {
+    background: var(--brand-light);
+}
+
+.faq dl {
+    margin: 0;
+    padding: 0 1.2rem 1rem;
+}
+
+.faq dt {
+    font-variant: small-caps;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+.faq dd {
+    margin: 0.2rem 0 0;
+}
+
+.faq time {
+    font-weight: 400;
+    color: var(--muted);
+}
+
+/* ===== 17. Контакты: Flexbox ============================================= */
+.contact-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.4rem;
+    margin-bottom: 1.4rem;
+    padding: 1.2rem;
+    border: 1px solid #dbe4f7;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, #ffffff, #f7faff);
+    box-shadow: 0 6px 16px rgba(30, 58, 138, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Фото не растёт и может ужиматься, текст занимает свободное место. */
+.contact-card > p {
+    flex: 0 1 150px;
+    margin: 0;
+}
+
+.contact-card img {
+    width: 150px;
+    height: 150px;
+    border: 4px solid var(--brand-light);
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: var(--shadow);
+}
+
+.contact-card__info {
+    flex: 1 1 260px;
+    min-width: 220px;
+}
+
+.contact-card address {
+    font-style: normal;
+    font-size: 0.92rem;
+    line-height: 1.8;
+}
+
+.contact-card address p {
+    margin: 0;
+}
+
+/* ===== 18. Вакансии: float и clear ======================================= */
+.vacancy-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.vacancy {
+    float: left;
+    width: calc(50% - 1rem);
+    margin: 0.5rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid #dbe4f7;
+    border-top: 5px solid var(--brand);
+    border-radius: var(--radius);
+    background: #ffffff;
+    box-shadow: 0 6px 14px rgba(30, 58, 138, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vacancy:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Нечётные карточки начинают новый ряд и запрещают обтекание слева. */
+.vacancy:nth-child(odd) {
+    clear: both;
+}
+
+.clear {
+    clear: both;
+    margin: 0;
+}
+
+/* ===== 19. Формы ========================================================= */
+form {
+    margin: 1rem 0;
+}
+
+fieldset {
+    margin-bottom: 1.2rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid #dbe4f7;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, #ffffff, #f8faff);
+}
+
+legend {
+    padding: 0.2rem 0.8rem;
+    border-radius: 999px;
+    background: var(--brand);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 0.15rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Ключевые слова шрифтов для компонентов формы (ЛР2). */
+input {
+    font: caption;
+    font-size: 0.95rem;
+}
+
+select {
+    font: menu;
+    font-size: 0.95rem;
+}
+
+button,
+input[type="submit"],
+input[type="button"] {
+    font: button;
+    font-size: 0.9rem;
+}
+
+textarea {
+    font: small-caption;
+    font-size: 0.95rem;
+}
+
+input,
+select,
+textarea {
+    padding: 0.5rem 0.7rem;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: var(--ink);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.18);
+    outline: none;
+}
+
+input[type="submit"],
+button[type="submit"] {
+    padding: 0.6rem 1.6rem;
+    border: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--brand), #2563eb);
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+input[type="submit"]:hover,
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(90deg, var(--brand-dark), var(--brand));
+}
+
+input[type="button"] {
+    border: 2px solid var(--gold);
+    background: #fffbeb;
+    color: var(--brand-dark);
+    font-weight: 700;
+}
+
+textarea {
+    width: min(100%, 34rem);
+    resize: vertical;
+}
+
+select {
+    max-width: 100%;
+}
+
+option,
+optgroup {
+    font-family: var(--font-alt);
+}
+
+.errorlist {
+    margin: 0.4rem 0 0;
+    padding: 0.4rem 0.8rem 0.4rem 1.8rem;
+    border-left: 5px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    background: #fee2e2;
+    color: #7f1d1d;
+    font-size: 0.85rem;
+}
+
+.helptext {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+}
+
+output {
+    font-weight: 700;
+    color: var(--brand);
+}
+
+/* ===== 20. Промокоды ===================================================== */
+.promo-table {
+    width: min(100%, 60rem);
+    margin: 0 auto 1.5rem;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: #ffffff;
+    box-shadow: var(--shadow);
+}
+
+.promo-archive {
+    padding-left: 1.4rem;
+    list-style-position: inside;
+}
+
+.promo-archive li {
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    transition: background-color 0.25s ease;
+}
+
+.promo-archive li:hover {
+    background: var(--brand-light);
+}
+
+/* ===== 21. Таблицы ======================================================= */
+table {
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto 1.5rem;
+    border-collapse: collapse; /* убирает двойные линии между ячейками */
+    border-spacing: 0;
+    empty-cells: show;
+    font-size: 0.92rem;
+    font-variant-numeric: tabular-nums;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.1);
+}
+
+caption {
+    caption-side: top; /* заголовок таблицы над таблицей */
+    padding: 0.5rem 0.2rem 0.7rem;
+    font-variant: small-caps;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: left;
+    color: var(--brand-dark);
+}
+
+th,
+td {
+    padding: 0.55rem 0.85rem;
+    border: 1px solid #cbd5e1;
+    vertical-align: middle;
+    text-align: left;
+}
+
+thead th {
+    border-color: var(--brand-dark);
+    background: linear-gradient(180deg, #3b66d6, var(--brand));
+    color: #ffffff;
+    vertical-align: bottom;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+}
+
+tbody tr:nth-child(even) {
+    background: #f1f5ff;
+}
+
+tbody tr:hover {
+    background: #fde68a;
+}
+
+tbody tr:last-child td {
+    border-bottom: 2px solid var(--brand);
+}
+
+/* Числовые колонки — выравнивание по центру/справа. */
+td:nth-child(3),
+td:nth-child(4) {
+    text-align: center;
+}
+
+.promo-table td:last-child,
+.promo-table tfoot td:last-child {
+    text-align: right;
+}
+
+colgroup col:first-child {
+    background: rgba(212, 175, 55, 0.14);
+}
+
+tfoot th,
+tfoot td {
+    background: var(--brand-light);
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+/* ===== 22. Политика конфиденциальности =================================== */
+.policy > section {
+    padding: 1rem 1.2rem;
+    border-left: 6px solid var(--brand-light);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: linear-gradient(90deg, #ffffff, #f6f9ff);
+}
+
+.policy > section:nth-of-type(even) {
+    border-left-color: var(--gold);
+}
+
+.policy h3 {
+    color: var(--brand);
+}
+
+.policy h4,
+.policy h5,
+.policy h6 {
+    margin-bottom: 0.3em;
+    color: var(--muted);
+}
+
+.policy dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.3rem 1rem;
+}
+
+.policy dt {
+    font-weight: 700;
+    color: var(--brand-dark);
+}
+
+.policy dd {
+    margin: 0;
+}
+
+/* ===== 23. Медиа-запросы ================================================= */
+/* Большие экраны */
+@media (min-width: 1400px) {
+    .layout {
+        max-width: 1480px;
+    }
+
+    .catalog-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Планшеты и небольшие ноутбуки: каркас в колонку, каталог в 2 колонки */
+@media (max-width: 1024px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    aside {
+        position: static;
+        width: 100%;
+        max-height: none;
+        flex-basis: auto;
+    }
+
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .article-content {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+
+    .news-card__media {
+        flex-basis: 180px;
+    }
+}
+
+/* Телефоны и узкие окна: одна колонка */
+@media (max-width: 768px) {
+    body {
+        font-size: 15px;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .news-card {
+        flex-direction: column;
+    }
+
+    .news-card__media {
+        flex-basis: auto;
+        width: 100%;
+    }
+
+    .article-content {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+    }
+
+    .vacancy {
+        float: none;
+        width: auto;
+        margin: 0.5rem 0;
+        clear: both;
+    }
+
+    .partners .partner {
+        width: 170px;
+        height: 170px;
+        padding: 0.9rem;
+    }
+
+    .partner__logo {
+        width: 74px;
+        height: 50px;
+    }
+
+    .contact-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .policy dl,
+    .certificate__data {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Очень узкие экраны */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.25rem;
+    }
+
+    .site-nav a {
+        padding: 0.3rem 0.4rem;
+        font-size: 0.68rem;
+    }
+
+    .scene__stage {
+        height: 280px;
+    }
+
+    .certificate {
+        padding: 1.4rem 1rem;
+        border-width: 18px;
+    }
+
+    .certificate::before {
+        font-size: 8rem;
+    }
+
+    .preloader__text {
+        display: none;
+    }
+}
+
+/* Низкие окна: компактная шапка, сцена и прелоадер */
+@media (max-height: 600px) {
+    .site-nav {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+
+    .site-nav a {
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+    }
+
+    .scene__stage {
+        height: 220px;
+    }
+
+    .preloader {
+        padding: 0.15rem 1rem;
+    }
+
+    .preloader__text {
+        display: none;
+    }
+}
+
+/* Альбомная ориентация на низких экранах */
+@media (orientation: landscape) and (max-height: 520px) {
+    .scene__stage {
+        height: 190px;
+    }
+}
+
+/* На устройствах без hover описание ссылки всегда видно */
+@media (hover: none) {
+    .partner__site {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+/* Уважаем настройку «уменьшить движение» */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ===== 24. Вендорные префиксы ============================================ */
+/* Приставки -webkit-/-moz-/-o- и -ms- нужны для совместимости со старыми
+   версиями браузеров (Chrome/Safari, Firefox, Opera, IE/Edge). */
+.certificate {
+    -webkit-border-image: url("../img/cert-border.png") 44 round;
+    -moz-border-image: url("../img/cert-border.png") 44 round;
+    border-image: url("../img/cert-border.png") 44 round;
+}
+
+.company-logo:hover,
+.partners .partner:hover {
+    -webkit-transform: perspective(700px) rotateY(12deg) scale(1.06);
+    -moz-transform: perspective(700px) rotateY(12deg) scale(1.06);
+    -ms-transform: perspective(700px) rotateY(12deg) scale(1.06);
+    transform: perspective(700px) rotateY(12deg) scale(1.06);
+}
+
+.pill {
+    -webkit-animation: pill-spin 1.6s linear infinite;
+    -moz-animation: pill-spin 1.6s linear infinite;
+    -o-animation: pill-spin 1.6s linear infinite;
+    animation: pill-spin 1.6s linear infinite;
+}
+
+.article-content {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+}
+
+.news-summary {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+/* ===== 25. Анимации (keyframes) ========================================== */
+@-webkit-keyframes pill-spin {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes pill-spin {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@keyframes pill-spin {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+    50% {
+        transform: rotate(180deg) translateY(-3px);
+    }
+    100% {
+        transform: rotate(360deg) translateY(0);
+    }
+}
+
+@keyframes blink {
+    0%, 90%, 100% {
+        transform: scaleY(1);
+    }
+    94% {
+        transform: scaleY(0.1);
+    }
+}
+
+@keyframes customer-walk {
+    0% {
+        left: -18%;
+    }
+    30% {
+        left: 36%;
+    }
+    55% {
+        left: 36%;
+    }
+    80% {
+        left: 96%;
+    }
+    100% {
+        left: 114%;
+    }
+}
+
+@keyframes customer-straighten {
+    0%, 30% {
+        transform: rotate(16deg) translateY(8px);
+    }
+    50%, 100% {
+        transform: rotate(0deg) translateY(0);
+    }
+}
+
+@keyframes scarf-fade {
+    0%, 52% {
+        opacity: 1;
+    }
+    64%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes medicine-fly {
+    0%, 32% {
+        top: 42%;
+        left: 66%;
+        opacity: 0;
+        transform: rotate3d(1, 1, 0, 0deg);
+    }
+    36% {
+        opacity: 1;
+    }
+    50% {
+        top: 30%;
+        left: 46%;
+        opacity: 1;
+        transform: rotate3d(1, 1, 0, 540deg);
+    }
+    58%, 100% {
+        top: 30%;
+        left: 46%;
+        opacity: 0;
+        transform: rotate3d(1, 1, 0, 720deg);
+    }
+}
+
+@keyframes smile-show {
+    0%, 68% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+    80%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes name-appear {
+    0%, 74% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(14px) scale(0.9);
+    }
+    86%, 100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}

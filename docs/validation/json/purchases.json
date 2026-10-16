@@ -1,0 +1,24 @@
+{
+ "messages": [
+  {
+   "type": "error",
+   "lastLine": 100,
+   "lastColumn": 34,
+   "firstColumn": 1,
+   "message": "The “cellpadding” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "упки</h2>\n<table border=\"1\" cellpadding=\"4\">\n    <",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  },
+  {
+   "type": "error",
+   "lastLine": 100,
+   "lastColumn": 34,
+   "firstColumn": 1,
+   "message": "The “border” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "упки</h2>\n<table border=\"1\" cellpadding=\"4\">\n    <",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  }
+ ]
+}

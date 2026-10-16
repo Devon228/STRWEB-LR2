@@ -1,0 +1,10 @@
+{% if weather %}
+<aside role="complementary" aria-label="Погода в городе аптеки">
+    <strong>{{ weather.city }}</strong>
+    {% if weather.ok %}
+        <br>{{ weather.temperature }} °C, влаж. {{ weather.humidity }}%
+    {% else %}
+        <br><small>{{ weather.error }}</small>
+    {% endif %}
+</aside>
+{% endif %}

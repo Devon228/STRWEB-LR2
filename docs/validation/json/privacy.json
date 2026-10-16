@@ -1,0 +1,45 @@
+{
+ "messages": [
+  {
+   "type": "error",
+   "lastLine": 171,
+   "lastColumn": 29,
+   "firstColumn": 5,
+   "message": "Stray start tag “frameset”.",
+   "extract": "font>\n    <frameset rows=\"50%,50%\"><frame",
+   "hiliteStart": 10,
+   "hiliteLength": 25
+  },
+  {
+   "type": "error",
+   "lastLine": 171,
+   "lastColumn": 54,
+   "firstColumn": 30,
+   "message": "Stray start tag “frame”.",
+   "extract": "\"50%,50%\"><frame src=\"about:blank\"><frame",
+   "hiliteStart": 10,
+   "hiliteLength": 25
+  },
+  {
+   "type": "error",
+   "lastLine": 171,
+   "lastColumn": 79,
+   "firstColumn": 55,
+   "message": "Stray start tag “frame”.",
+   "extract": "ut:blank\"><frame src=\"about:blank\"></fram",
+   "hiliteStart": 10,
+   "hiliteLength": 25
+  },
+  {
+   "type": "error",
+   "lastLine": 171,
+   "lastColumn": 90,
+   "firstColumn": 80,
+   "message": "Stray end tag “frameset”.",
+   "extract": "ut:blank\"></frameset>\n    <",
+   "hiliteStart": 10,
+   "hiliteLength": 11
+  }
+ ],
+ "language": "ru"
+}

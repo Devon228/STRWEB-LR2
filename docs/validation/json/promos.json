@@ -1,0 +1,34 @@
+{
+ "messages": [
+  {
+   "type": "error",
+   "lastLine": 99,
+   "lastColumn": 74,
+   "firstColumn": 5,
+   "message": "The “cellpadding” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "</h3>\n    <table class=\"promo-table\" border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 70
+  },
+  {
+   "type": "error",
+   "lastLine": 99,
+   "lastColumn": 74,
+   "firstColumn": 5,
+   "message": "The “cellspacing” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "</h3>\n    <table class=\"promo-table\" border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 70
+  },
+  {
+   "type": "error",
+   "lastLine": 99,
+   "lastColumn": 74,
+   "firstColumn": 5,
+   "message": "The “border” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "</h3>\n    <table class=\"promo-table\" border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n     ",
+   "hiliteStart": 10,
+   "hiliteLength": 70
+  }
+ ]
+}

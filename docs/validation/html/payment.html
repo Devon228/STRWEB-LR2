@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <base target="_self">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Аптека «Здоровье+» — лекарства, витамины, консультации фармацевтов, онлайн-заказ и самовывоз в Минске.">
+    <meta name="keywords" content="аптека, Здоровье+, лекарства, витамины, Минск, самовывоз, промокоды">
+    <meta name="author" content="Сеть аптек «Здоровье+»">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Аптека «Здоровье+»">
+    <meta property="og:title" content="Аптека «Здоровье+» — официальный сайт">
+    <meta property="og:description" content="Каталог медикаментов, новости, отзывы, промокоды и онлайн-заказ в аптеке «Здоровье+».">
+    <meta property="og:image" content="/static/pharmacy/img/news/pharmacy1.jpeg">
+    <title>Оплата товаров — Аптека «Здоровье+»</title>
+    <link rel="icon" href="/static/pharmacy/img/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/pharmacy/css/style.css">
+    <style></style>
+</head>
+<body itemscope itemtype="https://schema.org/Pharmacy">
+    <noscript>
+        <p><strong>Внимание!</strong> Для работы корзины, демо-оплаты и переключения часового пояса включите JavaScript в браузере.</p>
+    </noscript>
+
+    <header id="top">
+        <div>
+            <svg width="40" height="40" viewBox="0 0 32 32" role="img" aria-label="Логотип аптеки «Здоровье+»">
+                <rect x="1" y="1" width="30" height="30" rx="6" fill="#1d4ed8"></rect>
+                <rect x="13" y="6" width="6" height="20" fill="#ffffff"></rect>
+                <rect x="6" y="13" width="20" height="6" fill="#ffffff"></rect>
+            </svg>
+            <h1 itemprop="name">Аптека «Здоровье+»</h1>
+        </div>
+        <p>Роль: <strong>Гость</strong>
+            <span></span>
+        </p>
+        <nav class="site-nav" aria-label="Главное горизонтальное меню">
+            <a href="/">Главная</a> |
+            <a href="/about/">О компании</a> |
+            <a href="/news/">Новости</a> |
+            <a href="/glossary/">Словарь</a> |
+            <a href="/contacts/">Контакты</a> |
+            <a href="/vacancies/">Вакансии</a> |
+            <a href="/privacy/">Конфиденциальность</a> |
+            <a href="/categories/">Категории</a> |
+            <a href="/medications/">Медикаменты</a> |
+            <a href="/promos/">Промокоды</a> |
+            <a href="/services/">Доп. услуги</a> |
+            <a href="/reviews/">Отзывы</a> |
+            <a href="/cart/">Корзина</a>
+            
+            
+            
+            
+                | <a href="/login/">Вход</a>
+                | <a href="/register/">Регистрация</a>
+            
+        </nav>
+        <hr>
+    </header>
+    
+
+    
+
+    <div class="layout">
+        <aside aria-label="Вертикальная навигация по разделам сайта">
+            <h2>Разделы сайта</h2>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/about/">О компании</a></li>
+                <li><a href="/news/">Новости</a></li>
+                <li><a href="/glossary/">Словарь терминов</a></li>
+                <li><a href="/contacts/">Контакты</a></li>
+                <li><a href="/vacancies/">Вакансии</a></li>
+                <li><a href="/promos/">Промокоды и купоны</a></li>
+                <li><a href="/reviews/">Отзывы</a></li>
+                <li><a href="/privacy/">Политика конфиденциальности</a></li>
+                <li><a href="/cart/">Корзина заказа</a></li>
+            </ul>
+            <h3>Каталог</h3>
+            <ul>
+                <li><a href="/medications/">Медикаменты</a></li>
+                <li><a href="/categories/">Категории</a></li>
+                <li><a href="/services/">Дополнительные услуги</a></li>
+                <li><a href="#top">Наверх страницы</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            
+<h2>Оплата товаров</h2>
+<p><small>Демонстрационная страница оплаты: данные никуда не отправляются, корзина очищается на клиенте после нажатия кнопки.</small></p>
+
+<noscript>
+    <p><strong>Оплата недоступна:</strong> для оформления заказа включите JavaScript в браузере.</p>
+</noscript>
+
+<form  id="payment-form" method="post">
+    <input type="hidden" name="csrfmiddlewaretoken" value="At8cbwjP2WFxMq38PPeztHcatwf01mZabr70BkPjeYeafVWY6O1CiXLRQQv0Sk19">
+
+    <fieldset>
+        <legend>Данные покупателя</legend>
+        <p>
+            <label for="payer-name">Имя и фамилия</label><br>
+            <input type="text" id="payer-name" name="payer_name" required minlength="2" maxlength="120" placeholder="Иван Иванов">
+        </p>
+        <p>
+            <label for="payer-phone">Телефон</label><br>
+            <input type="tel" id="payer-phone" name="payer_phone" required pattern="\+375 \(29\) [0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+375 (29) XXX-XX-XX">
+        </p>
+        <p>
+            <label for="payer-email">Электронная почта</label><br>
+            <input type="email" id="payer-email" name="payer_email" required placeholder="user@example.by">
+        </p>
+        <p>
+            <label for="payer-age">Возраст</label><br>
+            <input type="number" id="payer-age" name="payer_age" min="18" max="120" step="1" value="18">
+        </p>
+        <p>
+            <label for="pickup-point">Точка самовывоза</label><br>
+            <select id="pickup-point" name="pickup_point" required  >
+                <option value="" selected>— выберите точку самовывоза —</option>
+                <optgroup label="Минск">
+                    <option value="center">Филиал «Центр», пр-т Независимости, 10</option>
+                    <option value="south">Филиал «Юг», ул. Будённого, 25</option>
+                    <option value="north">Филиал «Север», ул. Купалы, 7</option>
+                </optgroup>
+                <optgroup label="Другие города">
+                    <option value="brest">Брест, ул. Советская, 1</option>
+                    <option value="gomel">Гомель, пр-т Ленина, 2</option>
+                </optgroup>
+            </select>
+        </p>
+        <p>
+            <label for="delivery-date">Дата получения</label><br>
+            <input type="date" id="delivery-date" name="delivery_date" min="2026-09-15" max="2026-12-31">
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Способ оплаты</legend>
+        <p>
+            <input type="radio" id="pay-card" name="payment_method" value="card" checked required>
+            <label for="pay-card">Банковская карта</label><br>
+            <input type="radio" id="pay-erip" name="payment_method" value="erip">
+            <label for="pay-erip">ЕРИП</label><br>
+            <input type="radio" id="pay-cash" name="payment_method" value="cash">
+            <label for="pay-cash">Наличные при получении</label>
+        </p>
+        <p>
+            <label for="card-number">Номер карты</label><br>
+            <input type="text" id="card-number" name="card_number" inputmode="numeric" pattern="[0-9]{16}" minlength="16" maxlength="16" placeholder="4111111111111111">
+            <br><small>Формат: 4111<wbr>1111<wbr>1111<wbr>1111 (16 цифр без пробелов).</small>
+        </p>
+        <p>
+            <label for="card-expiry">Срок действия</label><br>
+            <input type="month" id="card-expiry" name="card_expiry" min="2026-09" max="2035-12">
+        </p>
+        <p>
+            <label for="card-cvv">CVV-код</label><br>
+            <input type="password" id="card-cvv" name="card_cvv" pattern="[0-9]{3}" minlength="3" maxlength="3" autocomplete="off">
+        </p>
+        <p>
+            <label for="bank">Банк-эмитент</label><br>
+            <input type="text" id="bank" name="bank" list="bank-list" placeholder="Начните вводить название банка">
+            <datalist id="bank-list">
+                <option value="Приорбанк"></option>
+                <option value="Беларусбанк"></option>
+                <option value="БПС-Сбербанк"></option>
+                <option value="Белинвестбанк"></option>
+            </datalist>
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Дополнительно</legend>
+        <p>
+            <label for="comment">Комментарий к заказу</label><br>
+            <textarea id="comment" name="comment" rows="4" cols="50" maxlength="500" placeholder="Например: позвонить за час до готовности"></textarea>
+        </p>
+        <p>
+            <input type="checkbox" id="agree" name="agree" required>
+            <label for="agree">Согласен с <a href="/privacy/">политикой конфиденциальности</a></label>
+        </p>
+        <p>
+            <label for="promo-applied">Применённый промокод</label><br>
+            <input type="text" id="promo-applied" name="promo_applied" value="WINTER15" disabled>
+            <br><small>Заблокированное поле: псевдокласс <code>:disabled</code> задаёт серый фон и курсор <code>not-allowed</code>.</small>
+        </p>
+        <p>
+            <input type="button" id="click-counter" value="Нажать (input type=button)">
+            Нажатий: <output id="click-count" for="click-counter">0</output>
+            <br><small>Это <code>&lt;input type="button"&gt;</code>: подпись задаётся атрибутом <code>value</code>, а не содержимым, как у <code>&lt;button&gt;</code>.</small>
+        </p>
+        <p>
+            <button type="submit">Оплатить заказ</button>
+        </p>
+    </fieldset>
+</form>
+
+<p>
+    <label for="promo-code">Промокод на скидку</label><br>
+    <input type="text" id="promo-code" name="promo_code" form="payment-form" maxlength="20" placeholder="WINTER15">
+    <br><small>Поле находится вне формы, но связано с ней атрибутом <code>form="payment-form"</code> у input; label привязан через <code>for="promo-code"</code>.</small>
+</p>
+
+<p id="payment-message" role="status" aria-live="polite"></p>
+
+<script>
+(function () {
+    var form = document.getElementById('payment-form');
+    var message = document.getElementById('payment-message');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        localStorage.removeItem('pharmacy_cart');
+        message.textContent = 'Оплата прошла успешно! Корзина очищена, заказ принят в обработку.';
+        form.reset();
+    });
+
+    var counterButton = document.getElementById('click-counter');
+    var counterOutput = document.getElementById('click-count');
+    if (counterButton && counterOutput) {
+        var clicks = 0;
+        counterButton.addEventListener('click', function () {
+            clicks += 1;
+            counterOutput.value = clicks;
+            counterOutput.textContent = clicks;
+        });
+    }
+})();
+</script>
+
+        </main>
+    </div>
+
+    <hr>
+    <footer>
+        <h2>Аптека «Здоровье+»</h2>
+        <h3>Контакты и адрес</h3>
+        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+            <span itemprop="postalCode">220030</span>,
+            <span itemprop="addressLocality">г. Минск</span>,
+            <span itemprop="streetAddress">пр-т Независимости, 1</span><br>
+            Телефон: <a href="tel:+375172000000">+375 (17) 200-00-00</a><br>
+            Почта: <a href="mailto:info@zdorovie-plus.by">info@zdorovie-plus.by</a><br>
+            Режим работы: <time datetime="08:00">ежедневно 08:00–22:00</time>
+        </address>
+        <nav aria-label="Навигация в подвале">
+            <ul class="footer-links">
+                <li><a href="/about/">О компании</a></li>
+                <li><a href="/vacancies/">Вакансии</a></li>
+                <li><a href="/privacy/">Политика конфиденциальности</a></li>
+                <li><a href="/concurrency-demo/">Демо Asyncio</a></li>
+            </ul>
+        </nav>
+        <p><small>© 2026 Сеть аптек «Здоровье+». Учебный проект, цены указаны в BYN.</small></p>
+    </footer>
+
+    <script>
+        (function() {
+            var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            var url = '/set-timezone/';
+            if (tz && tz !== 'America/Chicago') {
+                fetch(url + '?tz=' + encodeURIComponent(tz), {
+                    credentials: 'same-origin'
+                });
+            }
+        })();
+    </script>
+
+    <div class="preloader" role="status" aria-live="polite" aria-label="Страница загружается">
+        <span class="pill" aria-hidden="true"></span>
+        <span class="preloader__text">Загрузка страницы…</span>
+    </div>
+</body>
+</html>

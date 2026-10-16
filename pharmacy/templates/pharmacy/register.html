@@ -1,0 +1,146 @@
+{% extends 'pharmacy/base.html' %}
+{% block title %}Регистрация — Аптека «Здоровье+»{% endblock %}
+{% block content %}
+<h2>Регистрация</h2>
+<form method="post" id="registration-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <ul class="errorlist">
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <fieldset>
+        <legend>Учётная запись</legend>
+        <p>
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {% if form.username.help_text %}<span class="helptext" id="id_username_helptext">{{ form.username.help_text }}</span>{% endif %}
+            {% if form.username.errors %}
+                <ul class="errorlist">
+                    {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+        <p>
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {% if form.email.errors %}
+                <ul class="errorlist">
+                    {% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+        <p>
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+            {% if form.first_name.errors %}
+                <ul class="errorlist">
+                    {% for error in form.first_name.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+        <p>
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+            {% if form.last_name.errors %}
+                <ul class="errorlist">
+                    {% for error in form.last_name.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+        <p>
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password1.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+        {% if form.password1.help_text %}
+            <div class="helptext" id="id_password1_helptext">{{ form.password1.help_text }}</div>
+        {% endif %}
+        <p>
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password2.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+        {% if form.password2.help_text %}
+            <div class="helptext" id="id_password2_helptext">{{ form.password2.help_text }}</div>
+        {% endif %}
+    </fieldset>
+
+    <fieldset>
+        <legend>Роль и личные данные</legend>
+        <div>
+            {{ form.account_role.label_tag }}
+            {{ form.account_role }}
+            {% if form.account_role.errors %}
+                <ul class="errorlist">
+                    {% for error in form.account_role.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <p>
+            {{ form.birth_date.label_tag }}
+            {{ form.birth_date }}
+            {% if form.birth_date.help_text %}<span class="helptext" id="id_birth_date_helptext">{{ form.birth_date.help_text }}</span>{% endif %}
+            {% if form.birth_date.errors %}
+                <ul class="errorlist">
+                    {% for error in form.birth_date.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+        <p>
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
+            {% if form.phone.errors %}
+                <ul class="errorlist">
+                    {% for error in form.phone.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+            <small>Формат: {{ form.phone.field.widget.attrs.title }}</small>
+        </p>
+        <div id="department-block" hidden>
+            <p>
+                {{ form.department.label_tag }}
+                {{ form.department }}
+                {% if form.department.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.department.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </p>
+        </div>
+    </fieldset>
+
+    <button type="submit">Зарегистрироваться</button>
+</form>
+<script>
+(function () {
+    const block = document.getElementById('department-block');
+    const roleInputs = document.querySelectorAll('input[name="account_role"]');
+    function syncDepartment() {
+        const selected = document.querySelector('input[name="account_role"]:checked');
+        const isEmployee = selected && selected.value === 'employee';
+        block.hidden = !isEmployee;
+        const select = block.querySelector('select');
+        if (select) {
+            select.required = isEmployee;
+            if (!isEmployee) {
+                select.value = '';
+            }
+        }
+    }
+    roleInputs.forEach((input) => input.addEventListener('change', syncDepartment));
+    syncDepartment();
+})();
+</script>
+{% endblock %}

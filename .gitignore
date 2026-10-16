@@ -1,0 +1,20 @@
+.env
+.env.example
+text.txt
+
+# Локальные данные и служебные файлы (не коммитим)
+db.sqlite3
+media/
+staticfiles/
+
+# Python/Django
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Отчёты и логи
+.coverage
+htmlcov/
+app.log
+logs/

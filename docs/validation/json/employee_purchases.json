@@ -1,0 +1,27 @@
+{
+ "version": "26.10.2",
+ "messages": [
+  {
+   "type": "info",
+   "lastLine": 106,
+   "lastColumn": 34,
+   "firstColumn": 1,
+   "subType": "warning",
+   "message": "The “border” attribute on the “table” element is obsolete. Consider specifying “img { border: 0; }” in CSS instead.",
+   "extract": "з</a></p>\n<table border=\"1\" cellpadding=\"4\">\n    <",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  },
+  {
+   "type": "info",
+   "lastLine": 106,
+   "lastColumn": 34,
+   "firstColumn": 1,
+   "subType": "warning",
+   "message": "The “cellpadding” attribute on the “table” element is obsolete. Use CSS instead.",
+   "extract": "з</a></p>\n<table border=\"1\" cellpadding=\"4\">\n    <",
+   "hiliteStart": 10,
+   "hiliteLength": 34
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{% extends 'pharmacy/base.html' %}
+{% block title %}Новости — Аптека «Здоровье+»{% endblock %}
+{% block content %}
+<h2>Новости аптеки</h2>
+<p><small>Часовой пояс: {{ user_timezone }}</small></p>
+{% for article in articles %}
+    <article class="news-card">
+        <div class="news-card__media">
+            {% include 'pharmacy/includes/article_image.html' with article=article %}
+        </div>
+        <div class="news-card__body">
+            <h3 class="news-card__title">{{ article.title }}</h3>
+            <p class="news-summary">{{ article.summary }}</p>
+            <p class="news-card__meta"><small>Опубликовано:
+                <time datetime="{{ article.published_at|date:'Y-m-d\TH:i' }}">{{ article.published_at|date:"d/m/Y H:i" }}</time>
+            </small></p>
+            <p><a class="read-more" href="{% url 'pharmacy:news_detail' article.pk %}">Читать далее</a></p>
+        </div>
+    </article>
+{% empty %}
+    <p>Новостей нет.</p>
+{% endfor %}
+{% if page_obj %}
+    <p>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</p>
+{% endif %}
+{% endblock %}

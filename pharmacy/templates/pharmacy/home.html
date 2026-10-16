@@ -1,0 +1,115 @@
+{% extends 'pharmacy/base.html' %}
+{% load static %}
+{% block title %}Главная — Аптека «Здоровье+»{% endblock %}
+{% block weather_widget %}
+{% if user.is_authenticated %}
+    {% include 'pharmacy/includes/weather_widget.html' %}
+{% endif %}
+{% endblock %}
+{% block content %}
+<hgroup>
+    <h2>Сеть аптек «Здоровье+»</h2>
+</hgroup>
+<p>Здоровье семьи — наша забота с 2010 года</p>
+<p><small>Часовой пояс: {{ user_timezone }} | Сейчас: {{ user_now|date:"d/m/Y H:i" }}</small></p>
+
+<section>
+    <h2>Логотип компании</h2>
+    <img src="{% static 'pharmacy/img/logo.svg' %}" alt="Логотип сети аптек «Здоровье+»" width="240" height="80">
+</section>
+
+<section>
+    <h2>Реклама и акции компании</h2>
+    <figure>
+        <picture>
+            <source media="(max-width: 480px)" srcset="{% static 'pharmacy/img/banner-mobile.jpg' %}">
+            <source media="(max-width: 768px)" srcset="{% static 'pharmacy/img/banner-vitamins.jpg' %}">
+            <source media="(max-width: 1024px)" srcset="{% static 'pharmacy/img/news/pharmacy3.jpeg' %}">
+            <img src="{% static 'pharmacy/img/news/pharmacy2.jpeg' %}" alt="Адаптивный рекламный баннер аптеки «Здоровье+»" width="640" height="360" loading="lazy">
+        </picture>
+        <figcaption>Адаптивный баннер: при изменении ширины окна картинка меняется на другую (≤480px, ≤768px, ≤1024px, шире — базовое фото).</figcaption>
+    </figure>
+</section>
+
+<section>
+    <h2>Каталог товаров и услуг</h2>
+    <p>Промокод месяца: <mark>WINTER15</mark> — скидка 15% на весь ассортимент.</p>
+    <ul class="catalog-grid">
+        <li><a href="{% url 'pharmacy:medication_list' %}">Медикаменты</a> — более 12 позиций в наличии</li>
+        <li><a href="{% url 'pharmacy:category_list' %}">Категории препаратов</a> — от анальгетиков до витаминов</li>
+        <li><a href="{% url 'pharmacy:service_list' %}">Дополнительные услуги</a> — измерение давления, доставка</li>
+        <li><a href="{% url 'pharmacy:pickup_list' %}">Точки самовывоза</a> — три филиала в Минске</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Последняя опубликованная статья</h2>
+    {% if latest_article %}
+        <article class="latest-article">
+            <span class="latest-article__badge">Последняя статья</span>
+            <h3>{{ latest_article.title }}</h3>
+            {% include 'pharmacy/includes/article_image.html' with article=latest_article %}
+            <p>{{ latest_article.summary }}</p>
+            <p>Опубликовано:
+                <time datetime="{{ latest_article.published_at|date:'Y-m-d\TH:i' }}">{{ latest_article.published_at|date:"d/m/Y H:i" }}</time>
+            </p>
+            <p><a class="read-more" href="{% url 'pharmacy:news_detail' latest_article.pk %}">Читать далее</a></p>
+            <span class="latest-article__hint">Бейдж и подсказка спозиционированы абсолютно</span>
+        </article>
+    {% else %}
+        <p>Новостей пока нет.</p>
+    {% endif %}
+    <p><a href="{% url 'pharmacy:news_list' %}">Все новости</a> | <a href="{% url 'pharmacy:medication_list' %}">Каталог</a></p>
+</section>
+
+<section>
+    <h2>Компании-партнёры</h2>
+    {% if partners %}
+        <ul class="partners">
+            {% for partner in partners %}
+                <li class="partner">
+                    <img class="partner__logo" src="{{ partner.logo_url }}" alt="Логотип {{ partner.name }}" width="180" height="60" loading="lazy">
+                    <a class="partner__name" href="{{ partner.website_url }}" target="_blank" rel="noopener">{{ partner.name }}</a>
+                    <p class="partner__desc">{{ partner.description }}</p>
+                    <a class="partner__site" href="{{ partner.website_url }}" target="_blank" rel="noopener">сайт</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <p><small>Всего компаний-партнёров: {{ partners|length }}. Блоки круглой формы и ссылка «сайт», появляющаяся при наведении, оформлены CSS.</small></p>
+    {% else %}
+        <p>Партнёры пока не добавлены.</p>
+    {% endif %}
+</section>
+
+<section class="scene">
+    <h2>Анимация: как работает аптека</h2>
+    <p class="scene__hint">CSS-анимация без JavaScript: сгорбленный покупатель в шарфе подходит к прилавку, аптекарь моргает, к покупателю подлетает лекарство, шарф исчезает, покупатель выпрямляется и уходит с улыбкой — затем появляется название компании.</p>
+    <div class="scene__stage" aria-hidden="true">
+        <div class="scene__counter">
+            <div class="scene__pharmacist">
+                <div class="scene__pharmacist-head">
+                    <span class="scene__eye scene__eye--left"></span>
+                    <span class="scene__eye scene__eye--right"></span>
+                    <span class="scene__mouth"></span>
+                </div>
+                <div class="scene__pharmacist-body"></div>
+            </div>
+        </div>
+        <div class="scene__medicine"></div>
+        <div class="scene__customer">
+            <div class="scene__customer-inner">
+                <div class="scene__customer-head">
+                    <span class="scene__customer-eye"></span>
+                    <span class="scene__customer-smile"></span>
+                </div>
+                <div class="scene__scarf"></div>
+                <div class="scene__customer-body"></div>
+                <div class="scene__customer-leg scene__customer-leg--left"></div>
+                <div class="scene__customer-leg scene__customer-leg--right"></div>
+            </div>
+        </div>
+        <p class="scene__name">Здоровье+</p>
+    </div>
+    <p class="scene__caption">Вариант «Аптека»: аптекарь за прилавком, покупатель в шарфе и подлетающее лекарство. Длительность цикла — 12 секунд, анимация бесконечная (animation-iteration-count: infinite).</p>
+</section>
+{% endblock %}
