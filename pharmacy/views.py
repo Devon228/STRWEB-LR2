@@ -1,8 +1,7 @@
 import logging
-import math
 from decimal import Decimal
 from zoneinfo import ZoneInfo
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse
 
 from asgiref.sync import async_to_sync
 from django import forms
@@ -64,7 +63,6 @@ from pharmacy.concurrency import load_game_assets
 from pharmacy.roles import Role, get_user_role
 from pharmacy.services.currency import fetch_exchange_rates
 from pharmacy.services.weather import fetch_weather, get_weather_cached
-from pharmacy.slider_settings import get_slider_settings, save_slider_settings
 from pharmacy.statistics import compute_pharmacy_statistics
 from pharmacy.time_utils import (
     format_date_dd_mm_yyyy,
@@ -88,9 +86,6 @@ class HomeView(TemplateView):
         if self.request.user.is_authenticated:
             context['weather'] = get_weather_cached()
         context['partners'] = Partner.objects.order_by('name')
-        # LR3: settings for the class-based slider. Editable by the owner only.
-        context['slider_settings'] = get_slider_settings(self.request)
-        context['slider_can_edit'] = get_user_role(self.request.user) == Role.OWNER
         return context
 
 
@@ -135,105 +130,6 @@ class ContactListView(ListView):
 
     def get_queryset(self):
         return ContactPerson.objects.filter(is_active=True)
-
-
-def contact_api_view(request):
-    """JSON endpoint for the LR3 contacts table (server-side data source).
-
-    The table itself is rendered in the browser by contacts.js. Keeping the
-    source of truth on the server lets the client sort/filter/paginate without
-    a page reload while still starting from real database records.
-    """
-    contacts = ContactPerson.objects.filter(is_active=True).order_by('full_name')
-    results = []
-    for contact in contacts:
-        photo_url = contact.display_photo_url
-        if photo_url.startswith('/'):
-            photo_url = request.build_absolute_uri(photo_url)
-        results.append(
-            {
-                'id': contact.pk,
-                'full_name': contact.full_name,
-                'photo_url': photo_url,
-                'job_description': contact.job_description,
-                'phone': contact.phone,
-                'email': contact.email,
-            }
-        )
-    return JsonResponse(
-        {'results': results},
-        json_dumps_params={'ensure_ascii': False},
-    )
-
-
-class JsLabView(TemplateView):
-    """Separate page for LR3 JavaScript study tasks (not page interactivity).
-
-    Task 8 (prototype/class inheritance), task 9 (browser APIs) and task 10
-    (Chart.js) live here, as required by the lab: JS learning exercises should
-    be placed on a dedicated page. Task 14 of the Chart.js variant list is
-    ln(1 - x) = -sum(x^k / k), so the server calculates both the partial sum
-    and the exact math.log value for the same x values.
-    """
-    template_name = 'pharmacy/js_lab.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        terms = 12
-        x_values = [round(-0.9 + index * 0.1, 1) for index in range(19)]
-        series_values = []
-        math_values = []
-        rows = []
-        for x_value in x_values:
-            partial_sum = sum(
-                -(x_value ** power) / power
-                for power in range(1, terms + 1)
-            )
-            exact_value = math.log(1 - x_value)
-            series_values.append(round(partial_sum, 6))
-            math_values.append(round(exact_value, 6))
-            rows.append(
-                {
-                    'x': x_value,
-                    'series': round(partial_sum, 6),
-                    'math': round(exact_value, 6),
-                }
-            )
-        context['chart_payload'] = {
-            'labels': x_values,
-            'series': series_values,
-            'exact': math_values,
-            'terms': terms,
-        }
-        context['series_rows'] = rows
-        return context
-
-
-def slider_settings_view(request):
-    """Save slider options for the owner (admin) in the session.
-
-    The delay form is only rendered for the owner. This view repeats the
-    authorization check on the server: hiding a form in HTML is not security,
-    therefore a non-owner POST receives HTTP 403.
-    """
-    if get_user_role(request.user) != Role.OWNER:
-        return HttpResponseForbidden('Только владелец может менять настройки слайдера.')
-
-    if request.method == 'POST':
-        save_slider_settings(
-            request,
-            {
-                'loop': request.POST.get('loop') == 'on',
-                'navs': request.POST.get('navs') == 'on',
-                'pags': request.POST.get('pags') == 'on',
-                'auto': request.POST.get('auto') == 'on',
-                'stop_mouse_hover': request.POST.get('stop_mouse_hover') == 'on',
-                'delay': request.POST.get('delay', '5'),
-            },
-        )
-        messages.success(request, 'Настройки слайдера сохранены.')
-        return redirect('pharmacy:home')
-    return redirect('pharmacy:home')
 
 
 class PrivacyView(TemplateView):
@@ -290,9 +186,7 @@ class MedicationListView(ListView):
     model = Medication
     template_name = 'pharmacy/medication_list.html'
     context_object_name = 'medications'
-    # LR3 task 5: pagination is done in the browser (3 items by default,
-    # with a user-selectable page size), so the server returns the full list.
-    paginate_by = None
+    paginate_by = 20
 
     def get_queryset(self):
         role = get_user_role(self.request.user)
