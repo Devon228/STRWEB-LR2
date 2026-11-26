@@ -1,4 +1,5 @@
 {% extends 'pharmacy/base.html' %}
+{% load static %}
 {% block title %}Контакты — Аптека «Здоровье+»{% endblock %}
 {% block content %}
 <h2>Контакты</h2>
@@ -15,19 +16,135 @@
     <figcaption>Схема проезда: г. Минск, пр-т Независимости, 1.</figcaption>
 </figure>
 
-{% for contact in contacts %}
-    <section class="contact-card">
-        {% include 'pharmacy/includes/contact_photo.html' with contact=contact %}
-        <div class="contact-card__info">
-            <h3>{{ contact.full_name }}</h3>
-            <div>{{ contact.job_description|linebreaks }}</div>
-            <address>
-                <p>Тел.: <a href="tel:{{ contact.phone|cut:' '|cut:'('|cut:')'|cut:'-' }}">{{ contact.phone }}</a></p>
-                <p>Почта: <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
-            </address>
-        </div>
-    </section>
-{% empty %}
-    <p>Контакты не найдены.</p>
-{% endfor %}
+<!-- LR3 task 3: interactive contacts table.
+     Initial rows are loaded from /contacts/api/ (see contacts.js and
+     pharmacy.views.contact_api_view), then sorted, filtered and paginated
+     entirely in the browser. Selected checkbox IDs are stored in localStorage,
+     so selection survives page changes and page reloads. -->
+<section id="contacts-app" data-contacts-app data-api-url="{% url 'pharmacy:contact_api' %}">
+    <h3>Таблица сотрудников</h3>
+    <p><small>Максимум 3 записи на страницу. Нажмите на строку, чтобы увидеть все поля под таблицей.</small></p>
+
+    <div class="contacts-toolbar">
+        <form id="contact-search-form" class="contacts-search" role="search">
+            <label for="contact-search">Поиск по таблице</label>
+            <input type="search" id="contact-search" name="q" placeholder="ФИО, работа, телефон, почта">
+            <button type="submit" id="contact-search-button">Найти</button>
+            <button type="button" id="contact-search-reset">Сбросить</button>
+        </form>
+        <button type="button" id="contact-add-toggle" aria-expanded="false" aria-controls="contact-add-form">
+            Добавить сотрудника
+        </button>
+    </div>
+
+    <form id="contact-add-form" class="contact-add-form" method="post" action="#" novalidate hidden>
+        <fieldset>
+            <legend>Новый сотрудник</legend>
+            <p>
+                <label for="contact-full-name">ФИО *</label>
+                <input type="text" id="contact-full-name" name="full_name" required maxlength="200" autocomplete="name">
+            </p>
+            <p>
+                <label for="contact-job">Выполняемые работы *</label>
+                <textarea id="contact-job" name="job_description" rows="3" required></textarea>
+            </p>
+            <p>
+                <label for="contact-phone">Телефон *</label>
+                <input type="tel" id="contact-phone" name="phone" required placeholder="+375 (29) 111-22-33">
+            </p>
+            <p>
+                <label for="contact-email">Почта *</label>
+                <input type="email" id="contact-email" name="email" required autocomplete="email">
+            </p>
+            <p>
+                <label for="contact-site">Личная страница (URL)</label>
+                <input type="url" id="contact-site" name="website" placeholder="https://site.ru/index.php">
+                <span class="form-hint">URL должен начинаться с http:// или https:// и заканчиваться на .php или .html.</span>
+            </p>
+            <p>
+                <label for="contact-photo">Фото</label>
+                <input type="file" id="contact-photo" name="photo" accept="image/*">
+            </p>
+            <p>
+                <button type="submit" id="contact-add-submit" disabled>Добавить в таблицу</button>
+                <button type="button" id="contact-add-cancel">Отмена</button>
+            </p>
+            <output id="contact-form-status" class="form-message" aria-live="polite"></output>
+        </fieldset>
+    </form>
+
+    <div class="table-scroll">
+        <table id="contact-table" class="contact-table">
+            <caption>Сотрудники аптеки «Здоровье+»</caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="contact-table__check">
+                        <input type="checkbox" id="contact-select-all" aria-label="Отметить всех на странице">
+                    </th>
+                    <th scope="col" aria-sort="none">
+                        <button type="button" class="sort-button" data-sort="full_name">
+                            ФИО <span data-sort-indicator aria-hidden="true"></span>
+                        </button>
+                    </th>
+                    <th scope="col" aria-sort="none">
+                        <button type="button" class="sort-button" data-sort="job_description">
+                            Работа <span data-sort-indicator aria-hidden="true"></span>
+                        </button>
+                    </th>
+                    <th scope="col" aria-sort="none">
+                        <button type="button" class="sort-button" data-sort="phone">
+                            Телефон <span data-sort-indicator aria-hidden="true"></span>
+                        </button>
+                    </th>
+                    <th scope="col" aria-sort="none">
+                        <button type="button" class="sort-button" data-sort="email">
+                            Почта <span data-sort-indicator aria-hidden="true"></span>
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="contact-table-body">
+                <tr>
+                    <td colspan="5">Загрузка данных с сервера…</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <nav id="contacts-pagination" class="pagination" aria-label="Навигация по страницам контактов"></nav>
+
+    <p class="contacts-bonus">
+        <button type="button" id="contact-bonus-button">Премировать отмеченных</button>
+    </p>
+    <output id="contact-bonus-output" class="form-message" aria-live="polite"></output>
+
+    <div id="contact-details" class="contact-details" aria-live="polite">
+        <p>Нажмите на строку таблицы, чтобы увидеть подробную информацию.</p>
+    </div>
+</section>
+
+<!-- Server-rendered fallback for browsers without JavaScript. The Django test
+     suite also checks that each active contact has a photo in this HTML. -->
+<noscript>
+    <h3>Сотрудники (версия без JavaScript)</h3>
+    {% for contact in contacts %}
+        <section class="contact-card">
+            {% include 'pharmacy/includes/contact_photo.html' with contact=contact %}
+            <div class="contact-card__info">
+                <h3>{{ contact.full_name }}</h3>
+                <div>{{ contact.job_description|linebreaks }}</div>
+                <address>
+                    <p>Тел.: <a href="tel:{{ contact.phone|cut:' '|cut:'('|cut:')'|cut:'-' }}">{{ contact.phone }}</a></p>
+                    <p>Почта: <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
+                </address>
+            </div>
+        </section>
+    {% empty %}
+        <p>Контакты не найдены.</p>
+    {% endfor %}
+</noscript>
+{% endblock %}
+
+{% block extra_scripts %}
+<script defer src="{% static 'pharmacy/js/contacts.js' %}"></script>
 {% endblock %}

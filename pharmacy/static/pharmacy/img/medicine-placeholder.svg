@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Упаковка лекарства">
+  <defs>
+    <linearGradient id="box" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eff6ff"/>
+      <stop offset="1" stop-color="#bfdbfe"/>
+    </linearGradient>
+  </defs>
+  <rect x="14" y="14" width="212" height="152" rx="18" fill="url(#box)" stroke="#1d4ed8" stroke-width="3"/>
+  <rect x="34" y="48" width="80" height="84" rx="10" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <path d="M74 62 V118 M46 90 H102" stroke="#b91c1c" stroke-width="12" stroke-linecap="round"/>
+  <rect x="128" y="52" width="76" height="10" rx="5" fill="#1d4ed8" opacity="0.8"/>
+  <rect x="128" y="72" width="60" height="8" rx="4" fill="#1d4ed8" opacity="0.45"/>
+  <rect x="128" y="90" width="70" height="8" rx="4" fill="#1d4ed8" opacity="0.45"/>
+  <rect x="128" y="108" width="44" height="8" rx="4" fill="#1d4ed8" opacity="0.45"/>
+  <circle cx="188" cy="134" r="15" fill="#d4af37" opacity="0.75"/>
+</svg>

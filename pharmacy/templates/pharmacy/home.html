@@ -31,6 +31,76 @@
     </figure>
 </section>
 
+<!-- LR3 task 1: class-based slider. Every option from the lab is stored in
+     data-slider-options: loop, navs, pags, auto, stopMouseHover and delay.
+     The delay and flags can be changed by the owner through the form below. -->
+<section>
+    <h2>Слайдер акций</h2>
+    <div class="slider"
+         data-slider
+         data-slider-options='{"loop": {{ slider_settings.loop|yesno:"true,false" }}, "navs": {{ slider_settings.navs|yesno:"true,false" }}, "pags": {{ slider_settings.pags|yesno:"true,false" }}, "auto": {{ slider_settings.auto|yesno:"true,false" }}, "stopMouseHover": {{ slider_settings.stop_mouse_hover|yesno:"true,false" }}, "delay": {{ slider_settings.delay }}}'>
+        <div class="slider__viewport">
+            <div class="slider__track">
+                <div class="slider__slide" data-slide>
+                    <a href="{% url 'pharmacy:medication_list' %}">
+                        <img src="{% static 'pharmacy/img/banner-mobile.jpg' %}" alt="Мобильная версия баннера аптеки" width="640" height="360">
+                    </a>
+                    <p class="slider__caption">Каталог медикаментов — более 12 позиций в наличии.</p>
+                </div>
+                <div class="slider__slide" data-slide>
+                    <a href="{% url 'pharmacy:service_list' %}">
+                        <img src="{% static 'pharmacy/img/banner-vitamins.jpg' %}" alt="Витамины и дополнительные услуги аптеки" width="640" height="360">
+                    </a>
+                    <p class="slider__caption">Витамины и дополнительные услуги для всей семьи.</p>
+                </div>
+                <div class="slider__slide" data-slide>
+                    <a href="{% url 'pharmacy:news_list' %}">
+                        <img src="{% static 'pharmacy/img/news/pharmacy1.jpeg' %}" alt="Новости аптеки «Здоровье+»" width="640" height="360">
+                    </a>
+                    <p class="slider__caption">Новости и полезные статьи о здоровье.</p>
+                </div>
+                <div class="slider__slide" data-slide>
+                    <a href="{% url 'pharmacy:promo_list' %}">
+                        <img src="{% static 'pharmacy/img/news/pharmacy2.jpeg' %}" alt="Промокоды и скидки аптеки" width="640" height="360">
+                    </a>
+                    <p class="slider__caption">Промокоды и сезонные скидки.</p>
+                </div>
+                <div class="slider__slide" data-slide>
+                    <a href="{% url 'pharmacy:about' %}">
+                        <img src="{% static 'pharmacy/img/news/pharmacy3.jpeg' %}" alt="История сети аптек «Здоровье+»" width="640" height="360">
+                    </a>
+                    <p class="slider__caption">История сети и сертификаты качества.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slider__controls">
+            <div class="slider__navs" data-slider-navs></div>
+            <p class="slider__status" data-slider-status aria-live="polite">1/5</p>
+            <div class="slider__pagination" data-slider-pags role="group" aria-label="Пагинация слайдера"></div>
+        </div>
+        <p class="slider__hint">Автопрокрутка и пауза при наведении управляются классом Slider; кнопки и пагинация создаются в JavaScript.</p>
+    </div>
+
+    {% if slider_can_edit %}
+        <form class="slider-settings" method="post" action="{% url 'pharmacy:slider_settings' %}">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Настройки слайдера (только владелец)</legend>
+                <p>
+                    <label for="slider-delay">Задержка, секунд</label>
+                    <input type="number" id="slider-delay" name="delay" min="1" max="60" value="{{ slider_settings.delay }}" required>
+                </p>
+                <p><label><input type="checkbox" name="loop" {% if slider_settings.loop %}checked{% endif %}> loop — листать по кругу</label></p>
+                <p><label><input type="checkbox" name="navs" {% if slider_settings.navs %}checked{% endif %}> navs — показывать стрелки</label></p>
+                <p><label><input type="checkbox" name="pags" {% if slider_settings.pags %}checked{% endif %}> pags — показывать пагинацию</label></p>
+                <p><label><input type="checkbox" name="auto" {% if slider_settings.auto %}checked{% endif %}> auto — автопрокрутка</label></p>
+                <p><label><input type="checkbox" name="stop_mouse_hover" {% if slider_settings.stop_mouse_hover %}checked{% endif %}> stopMouseHover — пауза при наведении</label></p>
+                <button type="submit">Сохранить настройки</button>
+            </fieldset>
+        </form>
+    {% endif %}
+</section>
+
 <section>
     <h2>Каталог товаров и услуг</h2>
     <p>Промокод месяца: <mark>WINTER15</mark> — скидка 15% на весь ассортимент.</p>
@@ -112,4 +182,26 @@
     </div>
     <p class="scene__caption">Вариант «Аптека»: аптекарь за прилавком, покупатель в шарфе и подлетающее лекарство. Длительность цикла — 12 секунд, анимация бесконечная (animation-iteration-count: infinite).</p>
 </section>
+
+<!-- LR3 task 11 (variant 14): medicine bottles move/rotate while the page is
+     scrolled. The JS reads window.scrollY through a passive scroll listener and
+     recalculates positions for both scroll directions (reverse scrolling).
+     The pulsing cross is an extra CSS animation. -->
+<section>
+    <h2>Анимация при скроллинге: лекарства аптеки</h2>
+    <p>Прокручивайте страницу вниз и вверх: бутылки с лекарствами перемещаются по сцене, покачиваются и меняют размер. Анимация симметрично работает в обратном направлении.</p>
+    <div class="scroll-scene" id="scroll-scene">
+        <img class="scroll-scene__item scroll-scene__item--1" src="{% static 'pharmacy/img/medicine-bottle.svg' %}" alt="" width="90" height="130" aria-hidden="true">
+        <img class="scroll-scene__item scroll-scene__item--2" src="{% static 'pharmacy/img/medicine-bottle.svg' %}" alt="" width="70" height="100" aria-hidden="true">
+        <img class="scroll-scene__item scroll-scene__item--3" src="{% static 'pharmacy/img/medicine-bottle.svg' %}" alt="" width="110" height="160" aria-hidden="true">
+        <img class="scroll-scene__item scroll-scene__item--4" src="{% static 'pharmacy/img/medicine-bottle.svg' %}" alt="" width="60" height="90" aria-hidden="true">
+        <span class="scroll-scene__pulse" aria-hidden="true">+</span>
+        <p class="scroll-scene__label">Здоровье+</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script defer src="{% static 'pharmacy/js/slider.js' %}"></script>
+<script defer src="{% static 'pharmacy/js/scroll-animation.js' %}"></script>
 {% endblock %}

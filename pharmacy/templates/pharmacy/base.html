@@ -14,6 +14,21 @@
     <meta property="og:image" content="{% static 'pharmacy/img/news/pharmacy1.jpeg' %}">
     <title>{% block title %}Аптека «Здоровье+»{% endblock %}</title>
     <link rel="icon" href="{% static 'pharmacy/img/favicon.svg' %}" type="image/svg+xml">
+    <!-- LR3 task 2: apply the saved theme before CSS paints the page.
+         This avoids a flash of the light theme when the dark theme is stored
+         in localStorage. The toggle itself lives in core.js. -->
+    <script>
+        (function () {
+            try {
+                var savedTheme = localStorage.getItem('pharmacy_theme');
+                if (savedTheme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+            } catch (error) {
+                /* Private mode / disabled storage: keep the light theme. */
+            }
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
@@ -50,7 +65,11 @@
             <a href="{% url 'pharmacy:promo_list' %}">Промокоды</a> |
             <a href="{% url 'pharmacy:service_list' %}">Доп. услуги</a> |
             <a href="{% url 'pharmacy:review_list' %}">Отзывы</a> |
-            <a href="{% url 'pharmacy:cart' %}">Корзина</a>
+            <a href="{% url 'pharmacy:cart' %}">Корзина</a> |
+            <a href="{% url 'pharmacy:js_lab' %}">JS-лаборатория</a>
+            <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">
+                Тёмная тема
+            </button>
             {% if current_role == 'customer' %}
                 | <a href="{% url 'pharmacy:pickup_list' %}">Самовывоз</a>
                 | <a href="{% url 'pharmacy:purchase_list' %}">Мои покупки</a>
@@ -106,6 +125,7 @@
                 <li><a href="{% url 'pharmacy:review_list' %}">Отзывы</a></li>
                 <li><a href="{% url 'pharmacy:privacy' %}">Политика конфиденциальности</a></li>
                 <li><a href="{% url 'pharmacy:cart' %}">Корзина заказа</a></li>
+                <li><a href="{% url 'pharmacy:js_lab' %}">JS-лаборатория (ЛР3)</a></li>
             </ul>
             <h3>Каталог</h3>
             <ul>
@@ -138,11 +158,36 @@
                 <li><a href="{% url 'pharmacy:about' %}">О компании</a></li>
                 <li><a href="{% url 'pharmacy:vacancy_list' %}">Вакансии</a></li>
                 <li><a href="{% url 'pharmacy:privacy' %}">Политика конфиденциальности</a></li>
+                <li><a href="{% url 'pharmacy:js_lab' %}">JS-лаборатория</a></li>
                 <li><a href="{% url 'pharmacy:concurrency_demo' %}">Демо Asyncio</a></li>
+                <li><button type="button" id="birthdate-open" class="link-button">Указать дату рождения</button></li>
             </ul>
         </nav>
         <p><small>© 2026 Сеть аптек «Здоровье+». Учебный проект, цены указаны в BYN.</small></p>
     </footer>
+
+    <!-- LR3 task 7: date-of-birth dialog. It is shown once per browser tab;
+         the footer link above lets the examiner open it again at any time. -->
+    <div class="modal" id="birthdate-modal" hidden>
+        <div class="modal__backdrop" data-birthdate-close></div>
+        <section class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="birthdate-title">
+            <h2 id="birthdate-title">Дата рождения</h2>
+            <p>Для расчёта возраста и проверки совершеннолетия укажите дату рождения.</p>
+            <form id="birthdate-form" novalidate>
+                <p>
+                    <label for="birthdate-input">Дата рождения</label>
+                    <input type="date" id="birthdate-input" name="birthdate" required>
+                </p>
+                <p id="birthdate-hint" class="form-hint"></p>
+                <p id="birthdate-error" class="form-message form-message--error" role="alert"></p>
+                <output id="birthdate-result" class="form-message"></output>
+                <p class="modal__actions">
+                    <button type="submit">Проверить</button>
+                    <button type="button" data-birthdate-close>Позже</button>
+                </p>
+            </form>
+        </section>
+    </div>
 
     <script>
         (function() {
@@ -160,5 +205,9 @@
         <span class="pill" aria-hidden="true"></span>
         <span class="preloader__text">Загрузка страницы…</span>
     </div>
+
+    <!-- Site-wide LR3 behaviour: theme, preloader helpers and birth date check. -->
+    <script defer src="{% static 'pharmacy/js/core.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>
